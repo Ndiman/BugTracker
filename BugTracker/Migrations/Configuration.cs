@@ -44,20 +44,65 @@ namespace BugTracker.Migrations
             var userManager = new UserManager<ApplicationUser>(
                 new UserStore<ApplicationUser>(context));
 
-            if (!context.Users.Any(u => u.Email == "NicoleIman@Mailinator.com"))
+            if (!context.Users.Any(u => u.Email == "TestAdmin@Mailinator.com"))
             {
                 userManager.Create(new ApplicationUser
                 {
-                    UserName = "NicoleIman@Mailinator.com",
-                    Email = "NicoleIman@Mailinator.com",
-                    FirstName = "Nicole",
-                    LastName = "Iman",
-                    DisplayName = "NDIman",
+                    UserName = "TestAdmin@Mailinator.com",
+                    Email = "TestAdmin@Mailinator.com",
+                    FirstName = "Test",
+                    LastName = "Admin",
+                    DisplayName = "Admin",
                 }, "Abc&123!");
             }
 
-            var userId = userManager.FindByEmail("NicoleIman@Mailinator.com").Id;
+            var userId = userManager.FindByEmail("TestAdmin@Mailinator.com").Id;
             userManager.AddToRole(userId, "Admin");
+
+            if (!context.Users.Any(u => u.Email == "TestPM@Mailinator.com"))
+            {
+                userManager.Create(new ApplicationUser
+                {
+                    UserName = "TestPM@Mailinator.com",
+                    Email = "TestPM@Mailinator.com",
+                    FirstName = "Test",
+                    LastName = "ProjectManager",
+                    DisplayName = "ProjectManager",
+                }, "Abc&123!");
+            }
+
+            userId = userManager.FindByEmail("TestPM@Mailinator.com").Id;
+            userManager.AddToRole(userId, "ProjectManager");
+
+            if (!context.Users.Any(u => u.Email == "TestSubmitter@Mailinator.com"))
+            {
+                userManager.Create(new ApplicationUser
+                {
+                    UserName = "TestSubmitter@Mailinator.com",
+                    Email = "TestSubmitter@Mailinator.com",
+                    FirstName = "Test",
+                    LastName = "Submitter",
+                    DisplayName = "Submitter",
+                }, "Abc&123!");
+            }
+
+            userId = userManager.FindByEmail("TestSubmitter@Mailinator.com").Id;
+            userManager.AddToRole(userId, "Submitter");
+
+            if (!context.Users.Any(u => u.Email == "TestDev@Mailinator.com"))
+            {
+                userManager.Create(new ApplicationUser
+                {
+                    UserName = "TestDev@Mailinator.com",
+                    Email = "TestDev@Mailinator.com",
+                    FirstName = "Test",
+                    LastName = "Developer",
+                    DisplayName = "Developer",
+                }, "Abc&123!");
+            }
+
+            userId = userManager.FindByEmail("TestDev@Mailinator.com").Id;
+            userManager.AddToRole(userId, "Developer");
 
             //Add records into any of my custom tables
             context.TicketPriorities.AddOrUpdate(

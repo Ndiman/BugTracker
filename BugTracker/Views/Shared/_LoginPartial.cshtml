@@ -1,22 +1,68 @@
-﻿@using Microsoft.AspNet.Identity
-@if (Request.IsAuthenticated)
+﻿@model BugTracker.Models.RegisterViewModel
+@{ 
+    Layout = null;
+}
+@using (Html.BeginForm("Register", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-    {
     @Html.AntiForgeryToken()
+    <form>
+        <h1>Create Account</h1>
+        <div>
+            @Html.TextBoxFor(m => m.DisplayName, new { @class = "form-control", placeholder = "Display Name" })
+            @Html.ValidationMessageFor(m => m.DisplayName, "", new { @class = "text-danger" })
+        </div>
+        <div>
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email" })
+            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+        </div>
+        <div>
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+        </div>
+        <div>
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm Password" })
+        </div>
+        <div>
+            <input type="submit" value="Register" class="btn btn-default submit" />
+        </div>
+        <div class="clearfix"></div>
+        <div class="separator">
+            <p class="change_link">
+                Already a member ?
+                <a href="#signin" class="to_register"> Log in </a>
+            </p>
+            <div class="clearfix"></div>
+            <br />
+            <div>
+                <h1><i class="fa fa-bug"></i> BugTracker!</h1>
+                <p>©2018 Nicole Iman</p>
+            </div>
+        </div>
+    </form>
+}
 
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-        </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-    </ul>
+
+
+
+@*@using Microsoft.AspNet.Identity
+    @if (Request.IsAuthenticated)
+    {
+        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+        {
+        @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+            </li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+        </ul>
+        }
     }
-}
-else
-{
-    <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
-}
+    else
+    {
+        <ul class="nav navbar-nav navbar-right">
+            <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+            <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        </ul>
+    }*@
