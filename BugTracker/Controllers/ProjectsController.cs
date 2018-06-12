@@ -7,17 +7,27 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BugTracker.Models;
+using BugTracker.Helpers;
+using Microsoft.AspNet.Identity;
 
 namespace BugTracker.Controllers
 {
+    [Authorize]
     public class ProjectsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private ProjectsHelper projHelper = new ProjectsHelper();
+        private UserRolesHelper rolesHelper = new UserRolesHelper();
 
         // GET: Projects
         public ActionResult Index()
         {
             return View(db.Projects.ToList());
+        }
+
+        public ActionResult MyProjects()
+        {
+            return View("Index", projHelper.ListUserProjects(User.Identity.GetUserId()));
         }
 
         // GET: Projects/Details/5

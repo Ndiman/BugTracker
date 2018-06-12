@@ -232,6 +232,7 @@
     <Compile Include="Models\TicketType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\UserProfileViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -290,6 +291,7 @@
     <Content Include="Gentella\production\icons.html" />
     <Content Include="Gentella\production\images\american-express.png" />
     <Content Include="Gentella\production\images\cropper.jpg" />
+    <Content Include="Gentella\production\images\favicon.ico" />
     <Content Include="Gentella\production\images\img.jpg" />
     <Content Include="Gentella\production\images\inbox.png" />
     <Content Include="Gentella\production\images\mastercard.png" />
@@ -4618,6 +4620,7 @@
     <Content Include="Gentella\vendors\validator\README.md" />
     <Content Include="Gentella\vendors\validator\validator.jquery.json" />
     <Content Include="private.config" />
+    <None Include="Properties\PublishProfiles\NDIBugTracker - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -4718,6 +4721,8 @@
     <Content Include="Views\Dashboard\Submitter.cshtml" />
     <Content Include="Views\Dashboard\Developer.cshtml" />
     <Content Include="Views\Admin\AssignPMs.cshtml" />
+    <Content Include="Views\Manage\ChangeName.cshtml" />
+    <Content Include="Views\Manage\UpdateUserProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

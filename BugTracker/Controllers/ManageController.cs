@@ -7,6 +7,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using BugTracker.Models;
+using System.Net;
+using BugTracker.ViewModels;
 
 namespace BugTracker.Controllers
 {
@@ -15,6 +17,7 @@ namespace BugTracker.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         public ManageController()
         {
@@ -242,6 +245,46 @@ namespace BugTracker.Controllers
             }
             AddErrors(result);
             return View(model);
+        }
+
+        public ActionResult UpdateUserProfile()
+        {
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+
+            var profileInfo = new UserProfileViewModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                DisplayName = user.DisplayName,
+                Email = user.Email
+            };
+
+            return View(profileInfo);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateUserProfile(UserProfileViewModel userProfile)
+        {
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+
+            user.FirstName = userProfile.FirstName;
+            user.LastName = userProfile.LastName;
+            user.DisplayName = userProfile.DisplayName;
+            user.Email = userProfile.Email;
+            user.UserName = userProfile.Email;
+
+            db.Users.Attach(user);
+            db.Entry(user).Property(x => x.FirstName).IsModified = true;
+            db.Entry(user).Property(x => x.LastName).IsModified = true;
+            db.Entry(user).Property(x => x.DisplayName).IsModified = true;
+            db.Entry(user).Property(x => x.Email).IsModified = true;
+            db.Entry(user).Property(x => x.UserName).IsModified = true;
+            db.SaveChanges();
+
+            return RedirectToAction("Index", "Users");
         }
 
         //

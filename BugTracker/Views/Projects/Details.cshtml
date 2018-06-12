@@ -1,26 +1,73 @@
-﻿@model BugTracker.Models.Project
+﻿@using BugTracker.Helpers
+@using Microsoft.AspNet.Identity
+@model IEnumerable<BugTracker.Models.Project>
 
-@{
-    ViewBag.Title = "Details";
+
+@if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+{
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>Project</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
+<table class="table">
+    <tr>
+        <th>
             @Html.DisplayNameFor(model => model.Name)
-        </dt>
+        </th>
+        <th></th>
+    </tr>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @{
+                    var userId = User.Identity.GetUserId();
+                    var projHelper = new ProjectsHelper();
+                    var projects = projHelper.ListUserProjects(userId);
+                }
+                @foreach (var project in projects)
+                {
+                    @project.Name<br />
+                }
+            </td>
+            @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+            {
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            }
 
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+        </tr>
+    }
+
+</table>
+
+
+
+
+@*@model BugTracker.Models.Project*@
+
+
+
+@*<div>
+        <h4>Project</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>*@

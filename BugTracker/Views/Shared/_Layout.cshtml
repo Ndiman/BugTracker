@@ -1,4 +1,4 @@
-﻿
+﻿@using Microsoft.AspNet.Identity;
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +7,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Gentelella Alela! | </title>
+    <title>BugTracker!</title>
+    <link rel="icon"
+          type="image/x-icon"
+          href="~/Gentella/production/images/favicon.ico" />
     <!-- Bootstrap -->
     <link href="~/Gentella/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -30,13 +33,16 @@
                     </div>
                     <div class="clearfix"></div>
                     <!-- menu profile quick info -->
-                    @*<div class="profile clearfix">
+                    <div class="profile clearfix">
                         <div class="profile_pic">
-                            <img src="images/img.jpg" alt="..." class="img-circle profile_img">
-                        </div>*@
+                            <img src="~/Gentella/production/images/img.jpg" alt="..." class="img-circle profile_img">
+                        </div>
                         <div class="profile_info">
                             <span>Welcome,</span>
-                            <h2>@User.Identity.Name</h2>
+                            @*@{
+                                    var userId = User.Identity.GetUserId();
+                                }*@
+                            <h2>John Doe</h2>
                         </div>
                     </div>
                     <!-- /menu profile quick info -->
@@ -47,12 +53,23 @@
                             <h3>General</h3>
                             <ul class="nav side-menu">
                                 <li>
-                                    <a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="index.html">Dashboard</a></li>
-                                        <li><a href="index2.html">Dashboard2</a></li>
-                                        <li><a href="index3.html">Dashboard3</a></li>
-                                    </ul>
+
+                                    @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+                                    {
+                                        <a><i class="fa fa-folder-open-o"></i> Projects <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu">
+                                            <li>
+                                                <a href="@Url.Action("Index", "Projects")">My Projects</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">All Projects</a>
+                                            </li>
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action("Index", "Projects")"><i class="fa fa-folder-open-o"></i> Projects </a>
+                                    }
                                 </li>
                                 <li>
                                     <a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>
@@ -273,12 +290,12 @@
             <div class="right_col" role="main">
                 @RenderBody()
                 @*<div class="">
-                    <div class="page-title">
-                        <div class="title_left">
-                            <h3>Fixed Sidebar <small> Just add class <strong>menu_fixed</strong></small></h3>
+                        <div class="page-title">
+                            <div class="title_left">
+                                <h3>Fixed Sidebar <small> Just add class <strong>menu_fixed</strong></small></h3>
+                            </div>
                         </div>
-                    </div>
-                </div>*@
+                    </div>*@
             </div>
             <!-- /page content -->
             <!-- footer content -->

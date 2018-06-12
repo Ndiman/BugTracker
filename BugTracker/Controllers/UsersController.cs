@@ -11,6 +11,7 @@ using BugTracker.Models;
 
 namespace BugTracker.Controllers
 {
+    [Authorize]
     public class UsersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -22,6 +23,11 @@ namespace BugTracker.Controllers
         {
             return View(db.Users.ToList());
         }
+
+        //public ActionResult UserInfo()
+        //{
+        //    return View();
+        //}
 
         // GET: Users/Details/5
         public ActionResult Details(string id)
@@ -75,7 +81,7 @@ namespace BugTracker.Controllers
             }
 
             //set up a selectlist so I can select the role I want my user to occupy
-            var occupiedRole = rolesHelper.ListUserRoles(id);
+            var occupiedRole = rolesHelper.ListUserRoles(id).FirstOrDefault();
             ViewBag.Roles = new SelectList(db.Roles, "Name", "Name", occupiedRole);
 
             var myProjectIds = new List<int>();

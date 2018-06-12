@@ -7,9 +7,11 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BugTracker.Models;
+using Microsoft.AspNet.Identity;
 
 namespace BugTracker.Controllers
 {
+    [Authorize]
     public class TicketsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -17,6 +19,29 @@ namespace BugTracker.Controllers
         // GET: Tickets
         public ActionResult Index()
         {
+            var myTickets = new List<Ticket>();
+            var userId = User.Identity.GetUserId();
+            if (User.IsInRole("Admin"))
+            {
+                myTickets = db.Tickets.ToList();
+            }
+            else if (User.IsInRole("Developer"))
+            {
+                
+                myTickets = db.Tickets.Where(t => t.AssignedToUserId == userId).ToList();
+            }
+            else if (User.IsInRole("Submitter"))
+            {
+                myTickets = db.Tickets.Where(t => t.OwnerUserId == userId).ToList();
+            }
+            else
+            {
+                //I must be a project Manager
+                //First I need to get a list of all the projects I'm on
+                //Then I need to get all the tickets for each of these projects
+            }
+                
+
             var tickets = db.Tickets.Include(t => t.AssignedToUser).Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
             return View(tickets.ToList());
         }
