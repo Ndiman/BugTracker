@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNet.Identity;
+@using BugTracker.Helpers;
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,8 +18,16 @@
     <link href="~/Gentella/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
     <link href="~/Gentella/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="~/Gentella/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
     <!-- jQuery custom content scroller -->
     <link href="~/Gentella/vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
+    <!-- Datatables -->
+    <link href="~/Gentella/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="~/Gentella/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+    <link href="~/Gentella/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+    <link href="~/Gentella/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+    <link href="~/Gentella/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
     <!-- Custom Theme Style -->
     <link href="~/Gentella/build/css/custom.min.css" rel="stylesheet">
 </head>
@@ -39,9 +48,6 @@
                         </div>
                         <div class="profile_info">
                             <span>Welcome,</span>
-                            @*@{
-                                    var userId = User.Identity.GetUserId();
-                                }*@
                             <h2>John Doe</h2>
                         </div>
                     </div>
@@ -59,16 +65,16 @@
                                         <a><i class="fa fa-folder-open-o"></i> Projects <span class="fa fa-chevron-down"></span></a>
                                         <ul class="nav child_menu">
                                             <li>
-                                                <a href="@Url.Action("Index", "Projects")">My Projects</a>
+                                                <a href="@Url.Action("MyProjects", "Projects")">My Projects</a>
                                             </li>
                                             <li>
-                                                <a href="#">All Projects</a>
+                                                <a href="@Url.Action("Index", "Projects")">All Projects</a>
                                             </li>
                                         </ul>
                                     }
                                     else
                                     {
-                                        <a href="@Url.Action("Index", "Projects")"><i class="fa fa-folder-open-o"></i> Projects </a>
+                                        <a href="@Url.Action("MyProjects", "Projects")"><i class="fa fa-folder-open-o"></i> Projects </a>
                                     }
                                 </li>
                                 <li>
@@ -316,8 +322,26 @@
     <script src="~/Gentella/vendors/fastclick/lib/fastclick.js"></script>
     <!-- NProgress -->
     <script src="~/Gentella/vendors/nprogress/nprogress.js"></script>
+    <!-- iCheck -->
+    <script src="~/Gentella/vendors/iCheck/icheck.min.js"></script>
     <!-- jQuery custom content scroller -->
     <script src="~/Gentella/vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+    <!-- Datatables -->
+    <script src="~/Gentella/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/Gentella/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/Gentella/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Gentella/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="~/Gentella/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="~/Gentella/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/Gentella/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="~/Gentella/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="~/Gentella/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="~/Gentella/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Gentella/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="~/Gentella/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+    <script src="~/Gentella/vendors/jszip/dist/jszip.min.js"></script>
+    <script src="~/Gentella/vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="~/Gentella/vendors/pdfmake/build/vfs_fonts.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="~/Gentella/build/js/custom.min.js"></script>
 </body>

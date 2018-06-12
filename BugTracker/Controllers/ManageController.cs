@@ -247,6 +247,7 @@ namespace BugTracker.Controllers
             return View(model);
         }
 
+        //GET: /Manage/UpdateUserProfile
         public ActionResult UpdateUserProfile()
         {
             var userId = User.Identity.GetUserId();
@@ -263,6 +264,7 @@ namespace BugTracker.Controllers
             return View(profileInfo);
         }
 
+        //POST: /Manage/UpdateUserProfile
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult UpdateUserProfile(UserProfileViewModel userProfile)

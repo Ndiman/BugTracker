@@ -20,6 +20,7 @@ namespace BugTracker.Controllers
         private UserRolesHelper rolesHelper = new UserRolesHelper();
 
         // GET: Projects
+        [Authorize(Roles = "Admin, ProjectManager")]
         public ActionResult Index()
         {
             return View(db.Projects.ToList());
@@ -27,7 +28,7 @@ namespace BugTracker.Controllers
 
         public ActionResult MyProjects()
         {
-            return View("Index", projHelper.ListUserProjects(User.Identity.GetUserId()));
+            return View(projHelper.ListUserProjects(User.Identity.GetUserId()));
         }
 
         // GET: Projects/Details/5
@@ -135,3 +136,18 @@ namespace BugTracker.Controllers
         }
     }
 }
+
+//public ActionResult MyProjectTickets
+
+//    @foreach (var ticket in proj.Tickets)
+//{
+//    if((User.IsInRole("Developer"))&&(ticket.AssignedToUserId == myId))
+//    {
+//        Display Ticket
+//    }
+//    else if ((User.IsInRole("Submitter"))&&(ticket.OwnerUserId == myId))
+//    {
+
+//    }
+//    else if (())
+//}

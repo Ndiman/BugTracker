@@ -11,7 +11,7 @@ using BugTracker.Models;
 
 namespace BugTracker.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin, ProjectManager")]
     public class UsersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -106,15 +106,18 @@ namespace BugTracker.Controllers
                 applicationUser.UserName = applicationUser.Email;
                 //Assign the user to the selected role
                 //Determine if the user currently occupies a role and if so remove them from it
-                foreach (var role in rolesHelper.ListUserRoles(applicationUser.Id))
+
+                if (User.IsInRole("Admin"))
                 {
-                    rolesHelper.RemoveUserFromRole(applicationUser.Id, role);
+                    foreach (var role in rolesHelper.ListUserRoles(applicationUser.Id))
+                    {
+                        rolesHelper.RemoveUserFromRole(applicationUser.Id, role);
+                    }
+
+                    //Add them to the selected role
+                    if (Roles != null)
+                        rolesHelper.AddUserToRole(applicationUser.Id, Roles);
                 }
-
-                //Add them to the selected role
-                if (Roles != null)
-                    rolesHelper.AddUserToRole(applicationUser.Id, Roles);
-
                 //Remove user from all projects
                 foreach (var project in projHelper.ListUserProjects(applicationUser.Id))
                 {
