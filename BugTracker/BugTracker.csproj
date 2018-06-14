@@ -3741,6 +3741,7 @@
     <Content Include="Gentella\vendors\validator\validator.js" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Helpers\MyStyles.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -4726,6 +4727,8 @@
     <Content Include="Views\Manage\ChangeName.cshtml" />
     <Content Include="Views\Manage\UpdateUserProfile.cshtml" />
     <Content Include="Views\Projects\MyProjects.cshtml" />
+    <Content Include="Views\Tickets\MyTickets.cshtml" />
+    <Content Include="Views\Tickets\MyProjTickets.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

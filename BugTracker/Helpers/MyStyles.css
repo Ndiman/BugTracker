@@ -1,0 +1,10 @@
+﻿#ticktype, #tickpri, #tickstatus {
+    padding-left: 30px;
+    color: #73879C;
+}
+#tickinfo {
+    padding-top: 5px;
+}
+#tickchange {
+    padding-left: 250px;
+}

@@ -10,6 +10,8 @@ using BugTracker.Models;
 using System.Web.Configuration;
 using System.Net.Mail;
 using System.Net;
+using System.Security.Principal;
+using System.Web;
 
 namespace BugTracker
 {
@@ -144,6 +146,21 @@ namespace BugTracker
         public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
         {
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
+        }
+    }
+
+    public static class IIdentityExtensions
+    {
+        public static string GetUserFullName(this IIdentity identity)
+        {
+            ApplicationUser user = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(HttpContext.Current.User.Identity.GetUserId());
+            if (user != null)
+            {
+                var first = user.FirstName;
+                var last = user.LastName;
+                return first + ' ' + last;
+            }
+            return string.Empty;
         }
     }
 }
