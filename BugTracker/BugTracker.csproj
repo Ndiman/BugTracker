@@ -199,6 +199,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AttachmentTypesController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -215,11 +216,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ImageUploadValidator.cs" />
     <Compile Include="Helpers\ProjectsHelper.cs" />
     <Compile Include="Helpers\TicketsHelper.cs" />
     <Compile Include="Helpers\UserRolesHelper.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AttachmentType.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Project.cs" />
@@ -4729,9 +4732,18 @@
     <Content Include="Views\Projects\MyProjects.cshtml" />
     <Content Include="Views\Tickets\MyTickets.cshtml" />
     <Content Include="Views\Tickets\MyProjTickets.cshtml" />
+    <Content Include="Views\Tickets\_PriorityColor.cshtml" />
+    <Content Include="Views\Tickets\_StatusColor.cshtml" />
+    <Content Include="Views\AttachmentTypes\Create.cshtml" />
+    <Content Include="Views\AttachmentTypes\Delete.cshtml" />
+    <Content Include="Views\AttachmentTypes\Details.cshtml" />
+    <Content Include="Views\AttachmentTypes\Edit.cshtml" />
+    <Content Include="Views\AttachmentTypes\Index.cshtml" />
+    <Content Include="Views\Tickets\_AttachmentIcon.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Uploads\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

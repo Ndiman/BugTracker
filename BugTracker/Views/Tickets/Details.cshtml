@@ -1,101 +1,6 @@
 ﻿@model BugTracker.Models.Ticket
 
-@{
-    ViewBag.Title = "Details";
-}
 
-@*<h2>Details</h2>
-
-    <div>
-        <h4>Ticket</h4>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayName("Title")
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Title)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.Description)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Description)
-            </dd>
-
-            <dt>
-                @Html.DisplayName("Project")
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Project.Name)
-            </dd>
-
-            <dt>
-                @Html.DisplayName("Priority")
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.TicketPriority.Name)
-            </dd>
-
-            <dt>
-                @Html.DisplayName("Status")
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.TicketStatus.Name)
-            </dd>
-
-            <dt>
-                @Html.DisplayName("Type")
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.TicketType.Name)
-            </dd>
-
-            <dt>
-                @Html.DisplayName("Developer(s)")
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.AssignedToUser.DisplayName)
-            </dd>
-
-            <dt>
-                @Html.DisplayName("Submitter")
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.OwnerUser.DisplayName)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.Created)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Created)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.Updated)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Updated)
-            </dd>
-
-        </dl>
-    </div>
-    <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-        @Html.ActionLink("Back to List", "Index")
-    </p>*@
 
 
 <div class="">
@@ -126,8 +31,8 @@
                         </div>
                         <div id="tickinfo" class="col-md-6">
                             <span id="ticktype">Type: <a class="btn-sm btn-info">@Html.DisplayFor(model => model.TicketType.Name)</a></span>
-                            <span id="tickpri">Priority: <a class="btn-sm btn-warning">@Html.DisplayFor(model => model.TicketPriority.Name)</a></span>
-                            <span id="tickstatus">Status: <a class="btn-sm btn-success">@Html.DisplayFor(model => model.TicketStatus.Name)</a></span>
+                            <span id="tickpri">Priority: @Html.Partial("_PriorityColor")</span>
+                            <span id="tickstatus">Status: @Html.Partial("_StatusColor")</span>
                         </div>
                         <div id="tickchange" class="col-md-4">
                             <a href="@Url.Action("Edit", new { id = Model.Id})" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i> Edit</a>
@@ -135,44 +40,44 @@
                         </div>
                     </div>
                     @*<ul class="nav navbar-right panel_toolbox">
-                        <li>
-                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li>
-                                    <a href="#">Settings 1</a>
-                                </li>
-                                <li>
-                                    <a href="#">Settings 2</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="close-link"><i class="fa fa-close"></i></a>
-                        </li>
-                    </ul>*@
+                            <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="#">Settings 1</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Settings 2</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>*@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
                     <div class="col-md-9 col-sm-9 col-xs-12">
                         @*<ul class="stats-overview">
-                            <li>
-                                <span class="name"> Estimated budget </span>
-                                <span class="value text-success"> 2300 </span>
-                            </li>
-                            <li>
-                                <span class="name"> Total amount spent </span>
-                                <span class="value text-success"> 2000 </span>
-                            </li>
-                            <li class="hidden-phone">
-                                <span class="name"> Estimated project duration </span>
-                                <span class="value text-success"> 20 </span>
-                            </li>
-                        </ul>*@
+                                <li>
+                                    <span class="name"> Estimated budget </span>
+                                    <span class="value text-success"> 2300 </span>
+                                </li>
+                                <li>
+                                    <span class="name"> Total amount spent </span>
+                                    <span class="value text-success"> 2000 </span>
+                                </li>
+                                <li class="hidden-phone">
+                                    <span class="name"> Estimated project duration </span>
+                                    <span class="value text-success"> 20 </span>
+                                </li>
+                            </ul>*@
                         <br />
-                        <div id="mainb" style="height:350px;"></div>
+                        @*<div id="mainb" style="height:350px;"></div>*@
                         <div>
                             @using (Html.BeginForm("Create", "TicketComments", FormMethod.Post, new { @class = "form", role = "dialog" }))
                             {
@@ -180,40 +85,53 @@
                                 @Html.Hidden("TicketId", Model.Id)
                                 <div class="form-group">
                                     @*<label class="control-label col-md-3 col-sm-3 col-xs-12">Leave a comment</label>*@
-                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <div class="col-md-11 col-sm-11 col-xs-12">
                                         <textarea name="Comment" class="resizable_textarea form-control" placeholder="Leave a comment..."></textarea>
                                     </div>
-                                    <div class="cold-md-3 col-sm-3 col-xs-12">
+                                    <div class="cold-md-1 col-sm-1 col-xs-12">
                                         <input type="submit" value="Submit" class="btn btn-sm btn-default" />
                                     </div>
                                 </div>
                             }
 
 
-                            <h4>Comments</h4>
-                            <!-- user messages -->
-                            @foreach (var comment in Model.TicketComments.OrderByDescending(c => c.Created))
-                            {
-                                <ul class="messages">
-                                    <li>
-                                        <img src="~/Gentella/production/images/user.png" class="avatar" alt="Avatar">
-                                        <div class="message_date">
-                                            <h3 class="date text-info">@comment.Created.Day</h3>
-                                            <p class="month">@comment.Created.ToString("MMMM")</p>
-                                        </div>
-                                        <div class="message_wrapper">
-                                            <h4 class="heading">@comment.User.DisplayName</h4>
-                                            <blockquote class="message">@comment.Comment</blockquote>
-                                            <br />
-                                            <p class="url">
-                                                @*<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                                                <a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>*@
-                                            </p>
-                                        </div>
-                                    </li>
-                                </ul>
-                            }
-                            <!-- end of user messages -->
+                            <br />
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2> Comments </h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li>
+                                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                        </li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <!-- user messages -->
+                                    @foreach (var comment in Model.TicketComments.OrderByDescending(c => c.Created))
+                                    {
+                                        <ul class="messages">
+                                            <li>
+                                                <img src="~/Gentella/production/images/user.png" class="avatar" alt="Avatar">
+                                                <div class="message_date">
+                                                    <h3 class="date text-info">@comment.Created.Day</h3>
+                                                    <p class="month">@comment.Created.ToString("MMMM")</p>
+                                                </div>
+                                                <div class="message_wrapper">
+                                                    <h4 class="heading">@comment.User.DisplayName</h4>
+                                                    <blockquote class="message">@comment.Comment</blockquote>
+                                                    <br />
+                                                    <p>
+                                                        @*<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+                                                            <a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>*@
+                                                    </p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    }
+                                    <!-- end of user messages -->
+                                </div>
+                            </div>
 
                         </div>
 
@@ -227,38 +145,102 @@
                             </div>
                             <div class="panel-body">
                                 @*<h3 class="green"><i class="fa fa-paint-brush"></i> Gentelella</h3>
-                                <p>project description</p>
-                                <br />*@
+                                    <p>project description</p>
+                                    <br />*@
                                 <div class="project_detail">
                                     <p class="title">@Html.DisplayName("Description")</p>
                                     <p>@Html.DisplayFor(model => model.Description)</p>
                                     <p class="title">@Html.DisplayName("Developer")</p>
-                                    <p>@Html.DisplayFor(model => model.AssignedToUser.DisplayName)</p>
+                                    @if (Model.AssignedToUserId != null)
+                                    {
+                                        <p>@Html.DisplayFor(model => model.AssignedToUser.DisplayName)</p>
+                                    }
+                                    else
+                                    {
+                                        <p>Unassigned</p>
+                                    }
                                     <p class="title">@Html.DisplayName("Submitter")</p>
                                     <p>@Html.DisplayFor(model => model.OwnerUser.DisplayName)</p>
                                 </div>
                                 <br />
                                 <h5>Attachments</h5>
                                 <ul class="list-unstyled project_files">
+                                    @foreach (var attachment in Model.TicketAttachments.OrderByDescending(c => c.Created))
+                                    {
+                                    <li>
+                                        <a download href=@attachment.MediaUrl>@*<span>@Html.Partial("_AttachmentIcon")</span>*@
+                                            @Html.DisplayFor(model => attachment.MediaUrl.Split('/')[2].Split('.')[0])
+                                        </a>
+                                    </li>
+                                    }
                                     @*<li>
-                                        <a href=""><i class="fa fa-file-word-o"></i> Functional-requirements.docx</a>
-                                    </li>
-                                    <li>
-                                        <a href=""><i class="fa fa-file-pdf-o"></i> UAT.pdf</a>
-                                    </li>
-                                    <li>
-                                        <a href=""><i class="fa fa-mail-forward"></i> Email-from-flatbal.mln</a>
-                                    </li>
-                                    <li>
-                                        <a href=""><i class="fa fa-picture-o"></i> Logo.png</a>
-                                    </li>
-                                    <li>
-                                        <a href=""><i class="fa fa-file-word-o"></i> Contract-10_12_2014.docx</a>
-                                    </li>*@
+                                            <a href=""><i class="fa fa-file-word-o"></i> Functional-requirements.docx</a>
+                                        </li>
+                                        <li>
+                                            <a href=""><i class="fa fa-file-pdf-o"></i> UAT.pdf</a>
+                                        </li>
+                                        <li>
+                                            <a href=""><i class="fa fa-mail-forward"></i> Email-from-flatbal.mln</a>
+                                        </li>
+                                        <li>
+                                            <a href=""><i class="fa fa-picture-o"></i> Logo.png</a>
+                                        </li>
+                                        <li>
+                                            <a href=""><i class="fa fa-file-word-o"></i> Contract-10_12_2014.docx</a>
+                                        </li>*@
                                 </ul>
                                 <br />
-                                <div class="text-center mtop20">
-                                    <a href="#" class="btn btn-sm btn-primary">Add Attachment</a>
+                                <div class="mtop20">
+                                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Add Attachment</button>
+                                    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                           
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">
+                                                            <span aria-hidden="true">×</span>
+                                                        </button>
+                                                        <h4 class="modal-title" id="myModalLabel">File Uploader</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="">
+                                                            <div class="clearfix"></div>
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                    <div class="x_panel">
+                                                                        <div class="x_title">
+                                                                            <h2>Add an attachment</h2>
+                                                                            <div class="clearfix"></div>
+                                                                        </div>
+                                                                        <div class="x_content">
+                                                                            <p></p>
+                                                                            @using (Html.BeginForm("Create", "TicketAttachments", FormMethod.Post, new { enctype = "Multipart/form-data", @class = "dropzone", role = "form" }))
+                                                                            {
+                                                                                @Html.AntiForgeryToken()
+                                                                                @Html.Hidden("TicketId", Model.Id)
+                                                                                <form action="form_upload.html" class="dropzone" name="file"></form>
+                                                                                <br />
+                                                                                //add input for description
+                                                                            }
+
+
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                        
+                                                    </div>
+                                                </div>
+                                            
+
+
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </section>

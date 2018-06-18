@@ -1,0 +1,16 @@
+﻿@model BugTracker.Models.TicketAttachment
+
+@if (Model.Type == "txt")
+{
+    <i class="fa fa-file-text"></i>
+}
+else if (Model.Type == "pdf")
+{
+    <i class="fa fa-file-pdf-o"></i>
+}
+else
+{
+    <i class="fa fa-file"></i>
+}
+
+@* type won't work cos it's not in that model. Need to use icon helper to get the file type so I can get the appropriate icon *@

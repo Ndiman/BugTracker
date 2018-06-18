@@ -1,0 +1,22 @@
+﻿@model BugTracker.Models.Ticket
+
+@if (Model.TicketPriority.Name == "Immediate")
+{
+    <a class="btn-sm btn-danger">@Html.DisplayFor(model => model.TicketPriority.Name)</a>
+}
+else if (Model.TicketPriority.Name == "High")
+{
+    <a class="btn-sm btn-warning">@Html.DisplayFor(model => model.TicketPriority.Name)</a>
+}
+else if (Model.TicketPriority.Name == "Medium")
+{
+    <a class="btn-sm btn-primary">@Html.DisplayFor(model => model.TicketPriority.Name)</a>
+}
+else if (Model.TicketPriority.Name == "Low")
+{
+    <a class="btn-sm btn-default">@Html.DisplayFor(model => model.TicketPriority.Name)</a>
+}
+else
+{
+    <a class="btn-sm btn-dark">@Html.DisplayFor(model => model.TicketPriority.Name)</a>
+}

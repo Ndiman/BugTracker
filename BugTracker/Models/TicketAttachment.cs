@@ -9,8 +9,8 @@ namespace BugTracker.Models
     {
         public int Id { get; set; }
         public int TicketId { get; set; }
-        public string AttachmentPath { get; set; }
-        public string Description { get; set; }
+        public string MediaUrl { get; set; }
+        public string TicketDescription { get; set; }
         public DateTimeOffset Created { get; set; }
         public DateTimeOffset? Updated { get; set; }
         public string UserId { get; set; }

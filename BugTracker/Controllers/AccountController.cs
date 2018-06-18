@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using BugTracker.Models;
+using System.Web.Security;
 
 namespace BugTracker.Controllers
 {
@@ -394,7 +395,8 @@ namespace BugTracker.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            Session.Abandon();
+            return RedirectToAction("Index", "Dashboard");
         }
 
         //

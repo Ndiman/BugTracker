@@ -3,19 +3,29 @@
 
 
 <div>
-        <h4>Project</h4>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.Name)
-            </dt>
+    <h4>Project</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.Name)
-            </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
 
-        </dl>
-    </div>
+    </dl>
+</div>
+@if (User.IsInRole("Admin"))
+{
     <p>
-        @Html.ActionLink("Back to List", "Index")
+        @Html.ActionLink("Back to Projects", "Index")
     </p>
+}
+else
+{
+    <p>
+        @Html.ActionLink("Back to My Projects", "MyProjects")
+    </p>
+}
+

@@ -4,8 +4,8 @@
     ViewBag.Title = "MyProjTickets";
 }
 
-@foreach (var project in Model)
-{
+    @foreach (var project in Model)
+    {
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
@@ -18,83 +18,101 @@
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                <table id="datatable" class="table table-striped table-bordered">
+                <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th>
                                 @Html.DisplayName("Title")
                             </th>
                             <th>
-                                @Html.DisplayName("Ticket Priority")
+                                @Html.DisplayName("Project")
                             </th>
                             <th>
-                                @Html.DisplayName("Ticket Status")
+                                @Html.DisplayName("Priority")
                             </th>
                             <th>
-                                @Html.DisplayName("Ticket Type")
+                                @Html.DisplayName("Status")
                             </th>
                             <th>
-                                @Html.DisplayName("Developers")
+                                @Html.DisplayName("Type")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Developer")
                             </th>
                             <th>
                                 @Html.DisplayName("Submitter")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Created")
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in project.Tickets)
                         {
-                            if ((User.IsInRole("Developer") && (item.AssignedToUserId == User.Identity.GetUserId())) ||
-                                User.IsInRole("ProjectManager"))
+                            if (User.IsInRole("ProjectManager"))
                             {
-                                <tr>
-                                    <td>
-                                        <a href="@Url.Action("Details", new { id = item.Id })"><span>@Html.DisplayFor(modelItem => item.Title)</span></a>
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.TicketPriority.Name)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.TicketStatus.Name)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.TicketType.Name)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.AssignedToUser.DisplayName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.OwnerUser.DisplayName)
-                                    </td>
-                                    @*<td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                    </td>*@
-                                </tr>
+                        <tr>
+                            <td>
+                                <a href="@Url.Action("Details", new { id = item.Id })"><span>@Html.DisplayFor(modelItem => item.Title)</span></a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Project.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TicketPriority.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TicketStatus.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TicketType.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AssignedToUser.DisplayName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OwnerUser.DisplayName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Created.DateTime)
+                            </td>
+                            @*<td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+        </td>*@
+                        </tr>
                             }
-                            else if (User.IsInRole("Submitter") && (item.OwnerUserId == User.Identity.GetUserId()))
+                            else if (User.IsInRole("Developer") || User.IsInRole("Submitter"))
                             {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Title)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.TicketPriority.Name)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.TicketStatus.Name)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.TicketType.Name)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.AssignedToUser.DisplayName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.OwnerUser.DisplayName)
-                                    </td>
-                                </tr>
+                        <tr>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Project.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TicketPriority.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TicketStatus.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TicketType.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AssignedToUser.DisplayName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OwnerUser.DisplayName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Created.DateTime)
+                            </td>
+                        </tr>
                             }
                         }
                     </tbody>
@@ -103,5 +121,4 @@
         </div>
     </div>
 }
-
 

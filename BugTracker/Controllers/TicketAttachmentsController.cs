@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BugTracker.Models;
+using Microsoft.AspNet.Identity;
 
 namespace BugTracker.Controllers
 {
@@ -18,8 +20,13 @@ namespace BugTracker.Controllers
         // GET: TicketAttachments
         public ActionResult Index()
         {
-            var ticketAttachments = db.TicketAttachments.Include(t => t.Ticket).Include(t => t.User);
-            return View(ticketAttachments.ToList());
+            return View(db.TicketAttachments.ToList());
+        }
+        public ActionResult Specific(int ticketId)
+        {
+            ViewBag.Header = "Ticket Attacments";
+            var ticketAttachments = db.TicketAttachments.Where(t => t.TicketId == ticketId).ToList();
+            return View("Index", ticketAttachments);
         }
 
         // GET: TicketAttachments/Details/5
@@ -50,13 +57,23 @@ namespace BugTracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,TicketId,AttachmentPath,Description,Created,Updated,UserId")] TicketAttachment ticketAttachment)
+        public ActionResult Create([Bind(Include = "TicketId,TicketDescription")] TicketAttachment ticketAttachment, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
+                //ticketAttachment.MediaUrl = "/Uploads/default.png";
+                if (file != null)
+                {
+                    var fileName = Path.GetFileName(file.FileName).Replace(' ', '_');
+                    file.SaveAs(Path.Combine(Server.MapPath("~/Uploads/"), fileName));
+                    ticketAttachment.MediaUrl = "/Uploads/" + fileName;
+                }
+                ticketAttachment.Created = DateTimeOffset.Now;
+                ticketAttachment.UserId = User.Identity.GetUserId();
+
                 db.TicketAttachments.Add(ticketAttachment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Tickets", new { id = ticketAttachment.TicketId});
             }
 
             ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title", ticketAttachment.TicketId);
@@ -86,7 +103,7 @@ namespace BugTracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,TicketId,AttachmentPath,Description,Created,Updated,UserId")] TicketAttachment ticketAttachment)
+        public ActionResult Edit([Bind(Include = "Id,TicketId,MediaUrl,TicketDescription,Created,Updated,UserId")] TicketAttachment ticketAttachment)
         {
             if (ModelState.IsValid)
             {

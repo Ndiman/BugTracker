@@ -1,0 +1,22 @@
+﻿@model BugTracker.Models.Ticket
+
+@if (Model.TicketStatus.Name == "Unassigned")
+{
+    <a class="btn-sm btn-danger">@Html.DisplayFor(model => model.TicketStatus.Name)</a>
+}
+else if (Model.TicketStatus.Name == "Assigned/On Hold")
+{
+    <a class="btn-sm btn-warning">@Html.DisplayFor(model => model.TicketStatus.Name)</a>
+}
+else if (Model.TicketStatus.Name == "In Progress")
+{
+    <a class="btn-sm btn-success">@Html.DisplayFor(model => model.TicketStatus.Name)</a>
+}
+else if (Model.TicketStatus.Name == "Resolved")
+{
+    <a class="btn-sm btn-default">@Html.DisplayFor(model => model.TicketStatus.Name)</a>
+}
+else
+{
+    <a class="btn-sm btn-dark">@Html.DisplayFor(model => model.TicketStatus.Name)</a>
+}

@@ -44,6 +44,8 @@ namespace BugTracker.Migrations
             var userManager = new UserManager<ApplicationUser>(
                 new UserStore<ApplicationUser>(context));
 
+            string userId = "";
+
             if (!context.Users.Any(u => u.Email == "TestAdmin@Mailinator.com"))
             {
                 userManager.Create(new ApplicationUser
@@ -56,7 +58,7 @@ namespace BugTracker.Migrations
                 }, "Abc&123!");
             }
 
-            var userId = userManager.FindByEmail("TestAdmin@Mailinator.com").Id;
+            userId = userManager.FindByEmail("TestAdmin@Mailinator.com").Id;
             userManager.AddToRole(userId, "Admin");
 
             if (!context.Users.Any(u => u.Email == "TestPM@Mailinator.com"))
@@ -105,7 +107,9 @@ namespace BugTracker.Migrations
             userManager.AddToRole(userId, "Developer");
 
             //Add records into any of my custom tables
-            context.TicketPriorities.AddOrUpdate(
+            if (context.TicketPriorities.Count() == 0)
+            {
+                context.TicketPriorities.AddOrUpdate(
                 t => t.Name,
                     new TicketPriority { Id = 100, Name = "Immediate" },
                     new TicketPriority { Id = 200, Name = "High" },
@@ -113,7 +117,11 @@ namespace BugTracker.Migrations
                     new TicketPriority { Id = 400, Name = "Low" },
                     new TicketPriority { Id = 500, Name = "Ignore" }
              );
-            context.TicketStatuses.AddOrUpdate(
+            }
+            
+            if (context.TicketStatuses.Count() == 0)
+            {
+                context.TicketStatuses.AddOrUpdate(
                t => t.Name,
                    new TicketStatus { Id = 100, Name = "Unassigned" },
                    new TicketStatus { Id = 200, Name = "In Progress" },
@@ -121,28 +129,35 @@ namespace BugTracker.Migrations
                    new TicketStatus { Id = 400, Name = "Resolved" },
                    new TicketStatus { Id = 500, Name = "Closed" }
             );
-            context.TicketTypes.AddOrUpdate(
+            }
+            
+            if (context.TicketTypes.Count() == 0)
+            {
+                context.TicketTypes.AddOrUpdate(
                t => t.Name,
                    new TicketType { Id = 100, Name = "Bug" },
                    new TicketType { Id = 200, Name = "Call for documentation" },
                    new TicketType { Id = 300, Name = "ScreenCast Demo Request" }
             );
-            //context.Projects.AddOrUpdate(
-            //   t => t.Name,
-            //       new Project { Id = 100, Name = "", Description = "" },
-            //       new Project { Id = 200, Name = "", Description = "" },
-            //       new Project { Name = "", Description = "" }
-            //);
-            //context.Tickets.AddOrUpdate(
-            //    t => t.Title,
-            //        new Ticket { ProjectId = 100,
-            //        TicketPriorityId = 300,
-            //        TicketStatusId = 100,
-            //        TicketTypeId = 100,
-            //        Title = "",
-            //        Created = DateTimeOffSet.Now }
+            }
 
-            //);
+            context.AttachmentTypes.AddOrUpdate(
+                t => t.Type,
+                    new AttachmentType { Type = "txt" },
+                    new AttachmentType { Type = "doc" },
+                    new AttachmentType { Type = "docx" },
+                    new AttachmentType { Type = "pdf" },
+                    new AttachmentType { Type = "xls" },
+                    new AttachmentType { Type = "xlsx" },
+                    new AttachmentType { Type = "jpg" },
+                    new AttachmentType { Type = "jpeg" },
+                    new AttachmentType { Type = "gif" },
+                    new AttachmentType { Type = "png" },
+                    new AttachmentType { Type = "tiff" }
+            );
+
         }
+        
+
     }
 }

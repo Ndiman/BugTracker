@@ -76,7 +76,15 @@ namespace BugTracker.Controllers
             {
                 return HttpNotFound();
             }
-            return View(ticket);
+
+            if (User.IsInRole("Developer") && ticket.AssignedToUserId == User.Identity.GetUserId() ||
+                    (User.IsInRole("Submitter") && ticket.OwnerUserId == User.Identity.GetUserId()) ||
+                    (User.IsInRole("ProjectManager")) ||
+                    (User.IsInRole("Admin")))
+            {
+                return View(ticket);
+            }
+            return RedirectToAction("MyTickets");
         }
 
         // GET: Tickets/Create
@@ -107,7 +115,7 @@ namespace BugTracker.Controllers
 
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("MyTickets");
             }
 
             ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedToUserId);
@@ -132,22 +140,30 @@ namespace BugTracker.Controllers
                 return HttpNotFound();
             }
 
-            
-            var projDevs = new List<ApplicationUser>();
-            var projUsers = projHelper.UsersOnProject(ticket.ProjectId);
-            foreach (var user in projUsers)
+            if (User.IsInRole("Developer") && ticket.AssignedToUserId == User.Identity.GetUserId() ||
+                    (User.IsInRole("Submitter") && ticket.OwnerUserId == User.Identity.GetUserId()) ||
+                    (User.IsInRole("ProjectManager")) ||
+                    (User.IsInRole("Admin")))
             {
-                if (rolesHelper.IsUserInRole(user.Id, "Developer"))
-                    projDevs.Add(user);
-            }
-            ViewBag.AssignedToUserId = new SelectList(projDevs, "Id", "DisplayName", ticket.AssignedToUserId);
+                var projDevs = new List<ApplicationUser>();
+                var projUsers = projHelper.UsersOnProject(ticket.ProjectId);
+                foreach (var user in projUsers)
+                {
+                    if (rolesHelper.IsUserInRole(user.Id, "Developer"))
+                        projDevs.Add(user);
+                }
+                ViewBag.AssignedToUserId = new SelectList(projDevs, "Id", "DisplayName", ticket.AssignedToUserId);
 
-            ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "DisplayName", ticket.OwnerUserId);
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
-            ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
-            ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
-            ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
-            return View(ticket);
+                ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "DisplayName", ticket.OwnerUserId);
+                ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
+                ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
+                ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
+                ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
+
+
+                return View(ticket);
+            }
+            return RedirectToAction("MyTickets");
         }
 
         // POST: Tickets/Edit/5
@@ -171,7 +187,7 @@ namespace BugTracker.Controllers
                 db.Entry(ticket).Property(x => x.AssignedToUserId).IsModified = true;
 
                 db.SaveChanges();
-                return RedirectToAction("MyTickets");
+                return RedirectToAction("Details");
             }
             ViewBag.AssignedToUserId = new SelectList(db.Users, "Id", "FirstName", ticket.AssignedToUserId);
             ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "FirstName", ticket.OwnerUserId);
@@ -194,7 +210,14 @@ namespace BugTracker.Controllers
             {
                 return HttpNotFound();
             }
-            return View(ticket);
+            if (User.IsInRole("Developer") && ticket.AssignedToUserId == User.Identity.GetUserId() ||
+                    (User.IsInRole("Submitter") && ticket.OwnerUserId == User.Identity.GetUserId()) ||
+                    (User.IsInRole("ProjectManager")) ||
+                    (User.IsInRole("Admin")))
+            {
+                return View(ticket);
+            }
+            return RedirectToAction("MyTickets");
         }
 
         // POST: Tickets/Delete/5
@@ -205,7 +228,7 @@ namespace BugTracker.Controllers
             Ticket ticket = db.Tickets.Find(id);
             db.Tickets.Remove(ticket);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details");
         }
 
         protected override void Dispose(bool disposing)

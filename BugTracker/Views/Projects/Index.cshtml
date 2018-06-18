@@ -27,17 +27,31 @@
                 </thead>
                 @foreach (var item in Model)
                 {
-                    <tbody>
-                        <tr>
-                            <td>
-                                <a href="@Url.Action("Edit", new { id = item.Id})"><span>@item.Name</span></a><br />
-                            </td>
-                            @*<td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                    </td>*@
-                        </tr>
-                    </tbody>
+                    if (User.IsInRole("Admin"))
+                    {
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <a href="@Url.Action("Edit", new { id = item.Id})"><span>@item.Name</span></a><br />
+                                </td>
+                                @*<td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                        </td>*@
+                            </tr>
+                        </tbody>
+                    }
+                    else if (User.IsInRole("ProjectManager"))
+                    {
+                        <tbody>
+                            <tr>
+                                <td>
+                                    @item.Name<br />
+                                </td>
+                            </tr>
+                        </tbody>
+                    }
+
                 }
             </table>
         </div>
