@@ -36,7 +36,6 @@
                         </div>
                         <div id="tickchange" class="col-md-4">
                             <a href="@Url.Action("Edit", new { id = Model.Id})" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i> Edit</a>
-                            <a href="@Url.Action("Delete", new { id = Model.Id})" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Delete</a>
                         </div>
                     </div>
                     @*<ul class="nav navbar-right panel_toolbox">
@@ -134,7 +133,45 @@
                             </div>
 
                         </div>
+                        <!-- Ticket History -->
 
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Ticket History</h2>
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li>
+                                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>@Html.DisplayName("Property")</th>
+                                            <th>@Html.DisplayName("Changed By")</th>
+                                            <th>@Html.DisplayName("Changed At")</th>
+                                            <th>@Html.DisplayName("Old Value")</th>
+                                            <th>@Html.DisplayName("New Value")</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var history in Model.TicketHistories.OrderByDescending(c => c.Changed))
+                                        {
+                                            <tr>
+                                                <td>@history.Property</td>
+                                                <td>@history.User.DisplayName</td>
+                                                <td>@history.Changed</td>
+                                                <td>@history.OldValue</td>
+                                                <td>@history.NewValue</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- end Ticket History -->
                     </div>
                     <!-- start project-detail sidebar -->
                     <div class="col-md-3 col-sm-3 col-xs-12">
@@ -163,15 +200,16 @@
                                     <p>@Html.DisplayFor(model => model.OwnerUser.DisplayName)</p>
                                 </div>
                                 <br />
-                                <h5>Attachments</h5>
+                                <h5><b>Attachments</b></h5>
                                 <ul class="list-unstyled project_files">
                                     @foreach (var attachment in Model.TicketAttachments.OrderByDescending(c => c.Created))
                                     {
-                                    <li>
-                                        <a download href=@attachment.MediaUrl>@*<span>@Html.Partial("_AttachmentIcon")</span>*@
-                                            @Html.DisplayFor(model => attachment.MediaUrl.Split('/')[2].Split('.')[0])
-                                        </a>
-                                    </li>
+                                        <li>
+                                            <a download href=@attachment.MediaUrl>
+                                                @*<span>@Html.Partial("_AttachmentIcon")</span>*@
+                                                @Html.DisplayFor(model => attachment.MediaUrl.Split('/')[2].Split('.')[0])
+                                            </a>
+                                        </li>
                                     }
                                     @*<li>
                                             <a href=""><i class="fa fa-file-word-o"></i> Functional-requirements.docx</a>
@@ -194,49 +232,55 @@
                                     <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Add Attachment</button>
                                     <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
                                         <div class="modal-dialog modal-lg">
-                                           
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal">
-                                                            <span aria-hidden="true">×</span>
-                                                        </button>
-                                                        <h4 class="modal-title" id="myModalLabel">File Uploader</h4>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="">
-                                                            <div class="clearfix"></div>
-                                                            <div class="row">
-                                                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                                                    <div class="x_panel">
-                                                                        <div class="x_title">
-                                                                            <h2>Add an attachment</h2>
-                                                                            <div class="clearfix"></div>
-                                                                        </div>
-                                                                        <div class="x_content">
-                                                                            <p></p>
-                                                                            @using (Html.BeginForm("Create", "TicketAttachments", FormMethod.Post, new { enctype = "Multipart/form-data", @class = "dropzone", role = "form" }))
-                                                                            {
-                                                                                @Html.AntiForgeryToken()
-                                                                                @Html.Hidden("TicketId", Model.Id)
-                                                                                <form action="form_upload.html" class="dropzone" name="file"></form>
-                                                                                <br />
-                                                                                //add input for description
-                                                                            }
+
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">
+                                                        <span aria-hidden="true">×</span>
+                                                    </button>
+                                                    <h4 class="modal-title" id="myModalLabel">File Uploader</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="">
+                                                        <div class="clearfix"></div>
+                                                        <div class="row">
+                                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                <div class="x_panel">
+                                                                    <div class="x_title">
+                                                                        <h2>Add an attachment</h2>
+                                                                        <div class="clearfix"></div>
+                                                                    </div>
+                                                                    <div class="x_content">
+                                                                        <p></p>
+                                                                        @using (Html.BeginForm("Create", "TicketAttachments", FormMethod.Post, new { enctype = "Multipart/form-data", @class = "dropzone", role = "form" }))
+                                                                        {
+                                                                            @Html.AntiForgeryToken()
+                                                                            @Html.Hidden("TicketId", Model.Id)
+                                                                            <form action="form_upload.html" class="dropzone" name="file"></form>
+                                                                            <br />
+                                                                            @*<div class="form-group">
+                                                                                <div class="col-md-11 col-sm-11 col-xs-12">
+                                                                                    <input name="TicketDescription" class="form-control" placeholder="Please provide a short description" />
+                                                                                </div>
+                                                                                <div class="cold-md-1 col-sm-1 col-xs-12">
+                                                                                    <input type="submit" value="Submit" class="btn btn-sm btn-default" />
+                                                                                </div>
+                                                                            </div>*@
+                                                                        }
 
 
 
-                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                        
-                                                    </div>
                                                 </div>
-                                            
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+
 
 
                                         </div>

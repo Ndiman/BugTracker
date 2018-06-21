@@ -1,0 +1,45 @@
+﻿
+
+
+
+<div class="col-md-12">
+    <div class="col-middle">
+        <div class="text-center text-center">
+            <h1 class="error-number">403</h1>
+            <h2>Access denied</h2>
+            @if (User.IsInRole("Developer"))
+            {
+                <p>
+                    The ticket you are trying to access is not assigned to you.
+                </p>
+                <p>
+                    If you believe this to be in error, please contact your Project Manager or an Administrator.
+                </p>
+            }
+            else if (User.IsInRole("Submitter"))
+            {
+                <p>
+                    The ticket you are trying to access was not created by you.
+                </p>
+                <p>
+                    If you believe this to be in error, please contact your Project Manager or an Administrator.
+                </p>
+            }
+            else if (User.IsInRole("ProjectManager"))
+            {
+                <p>
+                    The Ticket you are trying to access is not on one of your projects.
+                </p>
+                <p>
+                    If you believe this to be in error, please contact an Administrator.
+                </p>
+            }
+            else
+            {
+                <p>
+                    The ticket you are trying to access does not appear to be valid.
+                </p>
+            }
+        </div>
+    </div>
+</div>

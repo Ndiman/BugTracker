@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using BugTracker.ActionFilters;
 using BugTracker.Models;
 using Microsoft.AspNet.Identity;
 
@@ -39,6 +40,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: TicketComments/Create
+        [TicketAuthorization]
         public ActionResult Create()
         {
             ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title");

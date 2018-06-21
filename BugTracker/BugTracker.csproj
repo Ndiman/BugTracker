@@ -192,6 +192,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionFilters\TicketAuthorization.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -213,6 +214,8 @@
     <Compile Include="Controllers\TicketStatusesController.cs" />
     <Compile Include="Controllers\TicketTypesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Extension Methods\TicketExtension.cs" />
+    <Compile Include="Extension Methods\UserExtension.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -4740,6 +4743,7 @@
     <Content Include="Views\AttachmentTypes\Edit.cshtml" />
     <Content Include="Views\AttachmentTypes\Index.cshtml" />
     <Content Include="Views\Tickets\_AttachmentIcon.cshtml" />
+    <Content Include="Views\Home\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

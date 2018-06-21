@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using BugTracker.ActionFilters;
 using BugTracker.Models;
 using Microsoft.AspNet.Identity;
 
@@ -45,6 +46,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: TicketAttachments/Create
+        [TicketAuthorization]
         public ActionResult Create()
         {
             ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title");
@@ -82,6 +84,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: TicketAttachments/Edit/5
+        [TicketAuthorization]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -117,6 +120,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: TicketAttachments/Delete/5
+        [TicketAuthorization]
         public ActionResult Delete(int? id)
         {
             if (id == null)
