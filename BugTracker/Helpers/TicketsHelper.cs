@@ -24,6 +24,16 @@ namespace BugTracker.Helpers
             return myTickets;
         }
 
+        public ICollection<Ticket> GetProjectTicketsUsingLinq(string userId)
+        {
+            return db.Users.Find(userId).Projects.SelectMany(t => t.Tickets).ToList();
+        }
+
+        public bool IsTicketOnMyProjects(string userId, int id)
+        {
+            return db.Users.AsNoTracking().FirstOrDefault(u => u.Id == userId).Projects.SelectMany(t => t.Tickets).Select(t => t.Id).Contains(id);
+        }
+
         public ICollection<Ticket> GetMyTicketsByRole (string userId)
         {
             var mytickets = new List<Ticket>();

@@ -24,9 +24,13 @@ namespace BugTracker.Controllers
         private TicketsHelper ticketsHelper = new TicketsHelper();
 
         // GET: Tickets
-        public ActionResult Index()
+        public ActionResult Index(string status)
         {
-            return View(db.Tickets.ToList());
+            if (string.IsNullOrEmpty(status))
+                return View(db.Tickets.ToList());
+            else
+                return View(db.Tickets.Where(t => t.TicketStatus.Name == status).ToList());
+            //return View(db.Tickets.ToList());
         }
 
         public ActionResult MyTickets()
@@ -155,8 +159,26 @@ namespace BugTracker.Controllers
                 db.SaveChanges();
 
                 ticket.RecordChanges(oldTicket);
+           
+                //only should trigger if developer is changed
+                if (oldTicket.AssignedToUserId != ticket.AssignedToUserId)
+                {
+                    await ticket.TriggerNotifications(oldTicket);
+                }
+                //Using a Ticket Extension method
+                
 
-                await ticket.TriggerNotifications(oldTicket);
+                ////Using a helper method
+                //var notificationData = new NotificationData
+                //{
+                //    RecipientId = ticket.AssignedToUserId,
+                //    Body = NotificationHelper.BuildNotificationBody(ticket),
+                //    Subject = "There was a change in assignment",
+                //    TicketId = ticket.Id,
+                //    Created = DateTimeOffset.Now
+                //};
+
+                //await NotificationHelper.TriggerNotification(notificationData, false);
 
                 return RedirectToAction("Details", new { id = ticket.Id});
             }

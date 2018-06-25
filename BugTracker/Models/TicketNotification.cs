@@ -11,6 +11,8 @@ namespace BugTracker.Models
         public int TicketId { get; set; }
         public string Body { get; set; }
         public string RecipientId { get; set; }
+        public string Subject { get; set; }
+        public DateTimeOffset Created { get; set; }
 
         public virtual Ticket Ticket { get; set; }
         public virtual ApplicationUser Recipient { get; set; }

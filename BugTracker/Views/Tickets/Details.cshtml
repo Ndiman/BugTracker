@@ -61,6 +61,32 @@
                 </div>
                 <div class="x_content">
                     <div class="col-md-9 col-sm-9 col-xs-12">
+
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Notifications</h2>
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li>
+                                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                    </li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
+                            @foreach (var notification in Model.TicketNotifications.OrderByDescending(t => t.Id))
+                            {
+                                <div class="x_content bs-example-popovers">
+                                    <div class="alert alert-warning alert-dismissible fade in" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                        @notification.Subject on @notification.Created.ToString().Split(' ')[0]
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <br />
+                        <br />
+                        <br />
                         @*<ul class="stats-overview">
                                 <li>
                                     <span class="name"> Estimated budget </span>
@@ -82,6 +108,7 @@
                             {
                                 @Html.AntiForgeryToken()
                                 @Html.Hidden("TicketId", Model.Id)
+
                                 <div class="form-group">
                                     @*<label class="control-label col-md-3 col-sm-3 col-xs-12">Leave a comment</label>*@
                                     <div class="col-md-11 col-sm-11 col-xs-12">
@@ -161,7 +188,7 @@
                                             <tr>
                                                 <td>@history.Property</td>
                                                 <td>@history.User.DisplayName</td>
-                                                <td>@history.Changed</td>
+                                                <td>@history.Changed.ToString().Split(' ')[0]</td>
                                                 <td>@history.OldValue</td>
                                                 <td>@history.NewValue</td>
                                             </tr>
@@ -259,13 +286,13 @@
                                                                             <form action="form_upload.html" class="dropzone" name="file"></form>
                                                                             <br />
                                                                             @*<div class="form-group">
-                                                                                <div class="col-md-11 col-sm-11 col-xs-12">
-                                                                                    <input name="TicketDescription" class="form-control" placeholder="Please provide a short description" />
-                                                                                </div>
-                                                                                <div class="cold-md-1 col-sm-1 col-xs-12">
-                                                                                    <input type="submit" value="Submit" class="btn btn-sm btn-default" />
-                                                                                </div>
-                                                                            </div>*@
+                                                                                    <div class="col-md-11 col-sm-11 col-xs-12">
+                                                                                        <input name="TicketDescription" class="form-control" placeholder="Please provide a short description" />
+                                                                                    </div>
+                                                                                    <div class="cold-md-1 col-sm-1 col-xs-12">
+                                                                                        <input type="submit" value="Submit" class="btn btn-sm btn-default" />
+                                                                                    </div>
+                                                                                </div>*@
                                                                         }
 
 

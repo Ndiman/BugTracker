@@ -79,7 +79,7 @@
                                     {
                                         <a href="@Url.Action("Index", "Projects")"><i class="fa fa-folder-open-o"></i>All Projects</a>
                                     }
-                                    else
+                                    else if (User.IsInRole("ProjectManager") || User.IsInRole("Developer") || User.IsInRole("Submitter"))
                                     {
                                         <a href="@Url.Action("MyProjects", "Projects")"><i class="fa fa-folder-open-o"></i> Projects </a>
                                     }

@@ -9,6 +9,9 @@ using System.Web.Mvc;
 using BugTracker.ActionFilters;
 using BugTracker.Models;
 using Microsoft.AspNet.Identity;
+using BugTracker.Extension_Methods;
+using BugTracker.Helpers;
+using System.Threading.Tasks;
 
 namespace BugTracker.Controllers
 {
@@ -53,14 +56,36 @@ namespace BugTracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Comment,Created,TicketId,UserId")] TicketComment ticketComment)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Comment,Created,TicketId,UserId")] TicketComment ticketComment)
         {
+            var oldTicketComment = db.TicketComments.AsNoTracking().FirstOrDefault(t => t.Id == ticketComment.Id);
+
             if (ModelState.IsValid)
             {
                 ticketComment.Created = DateTimeOffset.Now;
                 ticketComment.UserId = User.Identity.GetUserId();
+                ticketComment.User = db.Users.Find(ticketComment.UserId);
+                ticketComment.Ticket = db.Tickets.Find(ticketComment.TicketId);
+
                 db.TicketComments.Add(ticketComment);
                 db.SaveChanges();
+
+                var assignToUserId = db.Tickets.Find(ticketComment.TicketId).AssignedToUserId;
+                if(string.IsNullOrEmpty(assignToUserId))
+                    return RedirectToAction("Details", "Tickets", new { id = ticketComment.TicketId });
+
+                //Using a helper method
+                var notificationData = new NotificationData
+                {
+                    RecipientId = assignToUserId,
+                    Body = NotificationHelper.BuildNotificationBody(db.Tickets.Find(ticketComment.TicketId)),
+                    Subject = "A Comment was added",
+                    TicketId = ticketComment.TicketId,
+                    Created = DateTimeOffset.Now
+                };
+
+                await NotificationHelper.TriggerNotification(notificationData, false);
+
                 return RedirectToAction("Details", "Tickets", new { id = ticketComment.TicketId});
             }
 

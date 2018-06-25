@@ -76,7 +76,7 @@ namespace BugTracker.Extension_Methods
                 //Generate 1 email to the new Developer letting them know they have been assigned
                 email = new IdentityMessage()
                 {
-                    Subject = "Notification: A Ticket has been assigned to you",
+                    Subject = "A Ticket has been assigned to you",
                     Body = body.ToString(),
                     Destination = db.Users.Find(ticket.AssignedToUserId).Email
                 };
@@ -89,7 +89,7 @@ namespace BugTracker.Extension_Methods
                 //Generate 1 email to the old Dev letting them know they have been unassigned
                 email = new IdentityMessage()
                 {
-                    Subject = "Notification: You have been taken off of a Ticket",
+                    Subject = "You have been taken off of a Ticket",
                     Body = body.ToString(),
                     Destination = db.Users.Find(oldTicket.AssignedToUserId).Email
                 };
@@ -102,7 +102,7 @@ namespace BugTracker.Extension_Methods
                 //Generate 1 email to the new Dev letting them know they have been assigned
                 email = new IdentityMessage()
                 {
-                    Subject = "Notification: A Ticket has been assigned to you",
+                    Subject = "A Ticket has been assigned to you",
                     Body = body.ToString(),
                     Destination = db.Users.Find(ticket.AssignedToUserId).Email
                 };
@@ -113,7 +113,7 @@ namespace BugTracker.Extension_Methods
                 //Generate 1 email to the old Dev letting them know they've been unassigned
                 email = new IdentityMessage()
                 {
-                    Subject = "Notification: You have been taken of a Ticket",
+                    Subject = "You have been taken off of a Ticket",
                     Body = body.ToString(),
                     Destination = db.Users.Find(oldTicket.AssignedToUserId).Email
                 };
@@ -124,46 +124,65 @@ namespace BugTracker.Extension_Methods
 
             //Generate Notifcation
             TicketNotification notification = null;
-            if (newAssignment)
+            notification = new TicketNotification
             {
-                notification = new TicketNotification
-                {
-                    Body = "Notification: A Ticket has been assigned to you<br />" + body.ToString(),
-                    RecipientId = ticket.AssignedToUserId,
-                    TicketId = ticket.Id
-                };
-                db.TicketNotifications.Add(notification);
-            }
-            else if(unAssignment)
-            {
-                notification = new TicketNotification
-                {
-                    Body = "Notification: You have been taken off of a Ticket<br />" + body.ToString(),
-                    RecipientId = oldTicket.AssignedToUserId,
-                    TicketId = ticket.Id
-                };
-                db.TicketNotifications.Add(notification);
-            }
-            else if(reAssignment)
-            {
-                notification = new TicketNotification
-                {
-                    Body = "Notification: A Ticket has beena assigned to you<br />" + body.ToString(),
-                    RecipientId = ticket.AssignedToUserId,
-                    TicketId = ticket.Id
-                };
-                db.TicketNotifications.Add(notification);
-
-                notification = new TicketNotification
-                {
-                    Body = "Notification: You have been taken off of a Ticket<br />" + body.ToString(),
-                    RecipientId = oldTicket.AssignedToUserId,
-                    TicketId = ticket.Id
-                };
-                db.TicketNotifications.Add(notification);
-            }
+                Body = "Ticket has been reassigned",
+                Subject = "Ticket has been reassigned",
+                RecipientId = ticket.AssignedToUserId,
+                TicketId = ticket.Id,
+                Created = DateTimeOffset.Now
+            };
+            db.TicketNotifications.Add(notification);
             db.SaveChanges();
+            //TicketNotification notification = null;
+            //if (newAssignment)
+            //{
+            //    notification = new TicketNotification
+            //    {
+            //        Body = "A Ticket has been assigned to you<br />" + body.ToString(),
+            //        RecipientId = ticket.AssignedToUserId,
+            //        TicketId = ticket.Id
+            //    };
+            //    db.TicketNotifications.Add(notification);
+            //}
+            //else if(unAssignment)
+            //{
+            //    notification = new TicketNotification
+            //    {
+            //        Body = "You have been taken off of a Ticket<br />" + body.ToString(),
+            //        RecipientId = oldTicket.AssignedToUserId,
+            //        TicketId = ticket.Id
+            //    };
+            //    db.TicketNotifications.Add(notification);
+            //}
+            //else if(reAssignment)
+            //{
+            //    notification = new TicketNotification
+            //    {
+            //        Body = "A Ticket has beena assigned to you<br />" + body.ToString(),
+            //        RecipientId = ticket.AssignedToUserId,
+            //        TicketId = ticket.Id
+            //    };
+            //    db.TicketNotifications.Add(notification);
+
+            //    notification = new TicketNotification
+            //    {
+            //        Body = "Notification: You have been taken off of a Ticket<br />" + body.ToString(),
+            //        RecipientId = oldTicket.AssignedToUserId,
+            //        TicketId = ticket.Id
+            //    };
+            //    db.TicketNotifications.Add(notification);
+            //}
+            //db.SaveChanges();
         }
+
+        //public static void CommentAdded (this TicketComment ticketComment, TicketComment oldTicketComment)
+        //{
+        //    var newComment = (ticketComment.Comment != oldTicketComment.Comment);
+
+        //    var body = new StringBuilder();
+
+        //}
 
         private static string GetValueFromKey(string keyName, object key)
         {
@@ -198,3 +217,7 @@ namespace BugTracker.Extension_Methods
     }
 }
 
+//var newComment = (TicketComment.Commentbody != OldTicketComment.CommentBody)
+
+//    var commentOwnerName = TicketComment.User.DisplayName
+// var ticketTitle = ticketcomment.Ticket.Title

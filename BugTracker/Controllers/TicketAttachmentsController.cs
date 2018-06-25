@@ -5,9 +5,11 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using BugTracker.ActionFilters;
+using BugTracker.Helpers;
 using BugTracker.Models;
 using Microsoft.AspNet.Identity;
 
@@ -21,7 +23,8 @@ namespace BugTracker.Controllers
         // GET: TicketAttachments
         public ActionResult Index()
         {
-            return View(db.TicketAttachments.ToList());
+            var ticketAttachments = db.TicketAttachments.Include(t => t.Ticket).Include(t => t.User);
+            return View(ticketAttachments.ToList());
         }
         public ActionResult Specific(int ticketId)
         {
@@ -59,7 +62,7 @@ namespace BugTracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "TicketId,TicketDescription")] TicketAttachment ticketAttachment, HttpPostedFileBase file)
+        public async Task<ActionResult> Create([Bind(Include = "TicketId,TicketDescription")] TicketAttachment ticketAttachment, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
@@ -75,6 +78,23 @@ namespace BugTracker.Controllers
 
                 db.TicketAttachments.Add(ticketAttachment);
                 db.SaveChanges();
+
+                var assignToUserId = db.Tickets.Find(ticketAttachment.TicketId).AssignedToUserId;
+                if (string.IsNullOrEmpty(assignToUserId))
+                    return RedirectToAction("Details", "Tickets", new { id = ticketAttachment.TicketId });
+
+                //Using a helper method
+                var notificationData = new NotificationData
+                {
+                    RecipientId = assignToUserId,
+                    Body = NotificationHelper.BuildNotificationBody(db.Tickets.Find(ticketAttachment.TicketId)),
+                    Subject = "An Attachment was added",
+                    TicketId = ticketAttachment.TicketId,
+                    Created = DateTimeOffset.Now
+                };
+
+                await NotificationHelper.TriggerNotification(notificationData, false);
+
                 return RedirectToAction("Details", "Tickets", new { id = ticketAttachment.TicketId});
             }
 
