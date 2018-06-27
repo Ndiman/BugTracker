@@ -6,7 +6,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using BugTracker.Helpers;
-using BugTracker.ViewModels;
 using Microsoft.AspNet.Identity;
 
 namespace BugTracker.Controllers
@@ -16,6 +15,7 @@ namespace BugTracker.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private TicketsHelper ticketsHelper = new TicketsHelper();
+        private ProjectsHelper projHelper = new ProjectsHelper();
         
         public ActionResult Index()
         {
@@ -43,11 +43,18 @@ namespace BugTracker.Controllers
             //load up all My Tickets
             var myTickets = ticketsHelper.GetMyTicketsByRole(User.Identity.GetUserId());
             data.TicketData.TicketCnt = myTickets.Count();
+            //status
             data.TicketData.UnassignedTicketCnt = myTickets.Where(t => t.TicketStatus.Name == "Unassigned").Count();
             data.TicketData.InProgressTicketCnt = myTickets.Where(t => t.TicketStatus.Name == "In Progress").Count();
             data.TicketData.OnHoldTicketCnt = myTickets.Where(t => t.TicketStatus.Name == "Assigned/On Hold").Count();
             data.TicketData.ResolvedTicketCnt = myTickets.Where(t => t.TicketStatus.Name == "Resolved").Count();
             data.TicketData.ClosedTicketCnt = myTickets.Where(t => t.TicketStatus.Name == "Closed").Count();
+            //priority
+            data.TicketData.ImmediateTicketCnt = myTickets.Where(t => t.TicketPriority.Name == "Immediate").Count();
+
+            //load up all My Projects
+            var myProjects = projHelper.ListUserProjects(User.Identity.GetUserId());
+            data.ProjectData.MyProjectCnt = myProjects.Count();
 
 
             data.TicketData.TicketNotificationCnt = db.TicketNotifications.Count();

@@ -26,20 +26,25 @@ namespace BugTracker.ViewModels
     public class ProjectDashboardData
     {
         public int ProjectCnt { get; set; }
+        public int MyProjectCnt { get; set; }
     }
 
     public class TicketDashboardData
     {
         public int TicketCnt { get; set; }
+        //status
         public int UnassignedTicketCnt { get; set; }
         public int InProgressTicketCnt { get; set; }
         public int OnHoldTicketCnt { get; set; }
         public int ResolvedTicketCnt { get; set; }
         public int ClosedTicketCnt { get; set; }
+
         public int TicketNotificationCnt { get; set; }
         public int TicketCommentCnt { get; set; }
         public int TicketAttachmentCnt { get; set; }
         public int TicketHistoryCnt { get; set; }
+        //priority
+        public int ImmediateTicketCnt { get; set; }
     }
 
     public class TableDashboardData

@@ -1,50 +1,233 @@
 ﻿@model BugTracker.Models.LoginViewModel
+@using System.Web.Configuration;
 
-<div class="row">
-    <div class="col-lg-12">
-        <h1 class="page-header">Demo Users</h1>
-        @*<ol class="breadcrumb">
-                <li>
-                    <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
-                </li>
-                <li class="active">
-                    <i class="fa fa-file"></i> Blank Page
-                </li>
-            </ol>*@
 
-        @using (Html.BeginForm("DemoLogin", "Account", FormMethod.Post))
-        {
-            @Html.AntiForgeryToken()
-            @Html.Hidden("Email", "TestAdmin@Mailinator.com")
-            @Html.Hidden("Password", "Abc&123!")
-            <button type="submit" class="btn btn-success">Login as Test Admin</button>
-        }
+@{
+    var demoPassword = WebConfigurationManager.AppSettings["DemoUserPassword"];
+}
+<div class="">
+    <div class="page-title">
+        <div class="title_left">
+            <h3>Demo Logins</h3>
+        </div>
     </div>
-    <div class="col-lg-12">
-        @using (Html.BeginForm("DemoLogin", "Account", FormMethod.Post))
-        {
-            @Html.AntiForgeryToken()
-            @Html.Hidden("Email", "TestPM@Mailinator.com")
-            @Html.Hidden("Password", "Abc&123!")
-            <button type="submit" class="btn btn-success">Login as Test ProjectManager</button>
-        }
-    </div>
-    <div class="col-lg-12">
-        @using (Html.BeginForm("DemoLogin", "Account", FormMethod.Post))
-        {
-            @Html.AntiForgeryToken()
-            @Html.Hidden("Email", "TestDev@Mailinator.com")
-            @Html.Hidden("Password", "Abc&123!")
-            <button type="submit" class="btn btn-success">Login as Test Developer</button>
-        }
-    </div>
-    <div class="col-lg-12">
-        @using (Html.BeginForm("DemoLogin", "Account", FormMethod.Post))
-        {
-            @Html.AntiForgeryToken()
-            @Html.Hidden("Email", "TestSubmitter@Mailinator.com")
-            @Html.Hidden("Password", "Abc&123!")
-            <button type="submit" class="btn btn-success">Login as Test Submitter</button>
-        }
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel" style="height:600px;">
+                <div class="x_title">
+                    <h2>Select a Role to Demo </h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- price element -->
+                            <div class="col-md-3 col-sm-6 col-xs-12">
+                                <div class="pricing">
+                                    <div class="title">
+                                        <br />
+                                        <h3>Demo Admin</h3>
+                                    </div>
+                                    <div class="x_content">
+                                        <div class="">
+                                            <div class="pricing_features">
+                                                <ul class="list-unstyled text-left">
+                                                    <li><i class="fa fa-check text-success"></i> Assign Roles to Users</li>
+                                                    <li><i class="fa fa-check text-success"></i> View <strong>all</strong> Projects</li>
+                                                    <li><i class="fa fa-check text-success"></i> Create Projects</li>
+                                                    <li><i class="fa fa-check text-success"></i> Edit <strong>any</strong> Project</li>
+                                                    <li><i class="fa fa-check text-success"></i> Assign Users to <strong>any</strong> Projects</li>
+                                                    <li><i class="fa fa-check text-success"></i> Close Projects</li>
+                                                    <li><i class="fa fa-times text-danger"></i> Create Tickets</li>
+                                                    <li><i class="fa fa-check text-success"></i> View Ticket Details <strong>for any Ticket</strong></li>
+                                                    <li><i class="fa fa-check text-success"></i> Edit Tickets</li>
+                                                </ul>
+                                                <br />
+                                            </div>
+                                        </div>
+                                        <div class="pricing_footer">
+                                            @using (Html.BeginForm("DemoLogin", "Account", FormMethod.Post))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                @Html.Hidden("Email", WebConfigurationManager.AppSettings["AdminEmail"])
+                                                @Html.Hidden("Password", demoPassword)
+                                                <button type="submit" class="btn btn-primary btn-block">Login as Demo Admin</button>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- price element -->
+                            <!-- price element -->
+                            <div class="col-md-3 col-sm-6 col-xs-12">
+                                <div class="pricing">
+                                    <div class="title">
+                                        <br />
+                                        <h3>Demo Project Manager</h3>
+                                    </div>
+                                    <div class="x_content">
+                                        <div class="">
+                                            <div class="pricing_features">
+                                                <ul class="list-unstyled text-left">
+                                                    <li><i class="fa fa-times text-danger"></i> Assign Roles to Users</li>
+                                                    <li><i class="fa fa-check text-success"></i> View <strong>all</strong> Projects</li>
+                                                    <li><i class="fa fa-check text-success"></i> Create Projects</li>
+                                                    <li><i class="fa fa-check text-success"></i> Edit <strong>only Projects they belong to</strong></li>
+                                                    <li><i class="fa fa-check text-success"></i> Assign Users <strong>only to their</strong> Projects</li>
+                                                    <li><i class="fa fa-check text-success"></i> Close <strong>only their</strong> Projects</li>
+                                                    <li><i class="fa fa-times text-danger"></i> Create Tickets</li>
+                                                    <li><i class="fa fa-check text-success"></i> View Ticket Details <strong>on their Projects</strong></li>
+                                                    <li><i class="fa fa-check text-success"></i> Edit Tickets <strong>on their projects</strong></li>
+                                                </ul>
+                                                <br />
+                                            </div>
+                                        </div>
+                                        <div class="pricing_footer">
+                                            @using (Html.BeginForm("DemoLogin", "Account", FormMethod.Post))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                @Html.Hidden("Email", WebConfigurationManager.AppSettings["PMEmail"])
+                                                @Html.Hidden("Password", demoPassword)
+                                                <button type="submit" class="btn btn-primary btn-block">Login as Demo ProjectManager</button>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- price element -->
+                            <!-- price element -->
+                            <div class="col-md-3 col-sm-6 col-xs-12">
+                                <div class="pricing">
+                                    <div class="title">
+                                        <br />
+                                        <h3>Demo Developer</h3>
+                                    </div>
+                                    <div class="x_content">
+                                        <div class="">
+                                            <div class="pricing_features">
+                                                <ul class="list-unstyled text-left">
+                                                    <li><i class="fa fa-times text-danger"></i> Assign Roles to Users</li>
+                                                    <li><i class="fa fa-check text-success"></i> View <strong>assigned</strong> Projects</li>
+                                                    <li><i class="fa fa-times text-danger"></i> Create Projects</li>
+                                                    <li><i class="fa fa-times text-danger"></i> Edit Projects</li>
+                                                    <li><i class="fa fa-times text-danger"></i> Assign Users to Projects</li>
+                                                    <li><i class="fa fa-times text-danger"></i> Close Projects</li>
+                                                    <li><i class="fa fa-times text-danger"></i> Create Tickets</li>
+                                                    <li><i class="fa fa-check text-success"></i> View Ticket Details <strong>for assigned Tickets</strong></li>
+                                                    <li><i class="fa fa-check text-success"></i> Edit Ticket <strong>for assigned Tickets</strong></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="pricing_footer">
+                                            @using (Html.BeginForm("DemoLogin", "Account", FormMethod.Post))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                @Html.Hidden("Email", WebConfigurationManager.AppSettings["DevEmail"])
+                                                @Html.Hidden("Password", demoPassword)
+                                                <button type="submit" class="btn btn-primary btn-block">Login as Demo Developer</button>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- price element -->
+                            <!-- price element -->
+                            <div class="col-md-3 col-sm-6 col-xs-12">
+                                <div class="pricing">
+                                    <div class="title">
+                                        <br />
+                                        <h3>Demo Submitter</h3>
+                                    </div>
+                                    <div class="x_content">
+                                        <div class="">
+                                            <div class="pricing_features">
+                                                <ul class="list-unstyled text-left">
+                                                    <li><i class="fa fa-times text-danger"></i> Assign Roles to Users</li>
+                                                    <li><i class="fa fa-check text-success"></i> View <strong>assigned</strong> Projects</li>
+                                                    <li><i class="fa fa-times text-danger"></i> Create Projects</li>
+                                                    <li><i class="fa fa-times text-danger"></i> Edit Project</li>
+                                                    <li><i class="fa fa-times text-danger"></i> Assign Users to Projects</li>
+                                                    <li><i class="fa fa-times text-danger"></i> Close Projects</li>
+                                                    <li><i class="fa fa-times text-danger"></i> Create Tickets</li>
+                                                    <li><i class="fa fa-check text-success"></i> View Ticket Details <strong>for created Tickets</strong></li>
+                                                    <li><i class="fa fa-check text-success"></i> Edit Ticket <strong>for created Tickets</strong></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="pricing_footer">
+                                            @using (Html.BeginForm("DemoLogin", "Account", FormMethod.Post))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                @Html.Hidden("Email", WebConfigurationManager.AppSettings["SubmitterEmail"])
+                                                @Html.Hidden("Password", demoPassword)
+                                                <button type="submit" class="btn btn-primary btn-block">Login as Demo Submitter</button>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- price element -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Demo Users</h1>
+
+            @{
+                var demoPassword = WebConfigurationManager.AppSettings["DemoUserPassword"];
+            }
+            @using (Html.BeginForm("DemoLogin", "Account", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("Email", WebConfigurationManager.AppSettings["AdminEmail"])
+                @Html.Hidden("Password", demoPassword)
+                <button type="submit" class="btn btn-success">Login as Demo Admin</button>
+            }
+        </div>
+        <div class="col-lg-12">
+            @using (Html.BeginForm("DemoLogin", "Account", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("Email", WebConfigurationManager.AppSettings["PMEmail"])
+                @Html.Hidden("Password", demoPassword)
+                <button type="submit" class="btn btn-success">Login as Demo ProjectManager</button>
+            }
+        </div>
+        <div class="col-lg-12">
+            @using (Html.BeginForm("DemoLogin", "Account", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("Email", WebConfigurationManager.AppSettings["DevEmail"])
+                @Html.Hidden("Password", demoPassword)
+                <button type="submit" class="btn btn-success">Login as Demo Developer</button>
+            }
+        </div>
+        <div class="col-lg-12">
+            @using (Html.BeginForm("DemoLogin", "Account", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("Email", WebConfigurationManager.AppSettings["SubmitterEmail"])
+                @Html.Hidden("Password", demoPassword)
+                <button type="submit" class="btn btn-success">Login as Demo Submitter</button>
+            }
+        </div>
+    </div>*@

@@ -77,7 +77,7 @@ namespace BugTracker.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToAction("Index", "Dashboard");
+                    return RedirectToAction("Index", "Dashboard2");
                 default:
                     return RedirectToAction("Index", "Home");
             }
@@ -102,7 +102,7 @@ namespace BugTracker.Controllers
             {
                 case SignInStatus.Success:
                     if (returnUrl == null)
-                        return RedirectToAction("Index", "Dashboard");
+                        return RedirectToAction("Index", "Dashboard2");
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -187,7 +187,7 @@ namespace BugTracker.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Dashboard2");
                 }
                 AddErrors(result);
             }
@@ -417,7 +417,7 @@ namespace BugTracker.Controllers
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             Session.Abandon();
-            return RedirectToAction("Index", "Dashboard");
+            return RedirectToAction("Login", "Account");
         }
 
         //

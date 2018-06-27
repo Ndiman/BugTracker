@@ -4,6 +4,7 @@ namespace BugTracker.Migrations
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
@@ -46,101 +47,131 @@ namespace BugTracker.Migrations
 
             string userId = "";
 
-            if (!context.Users.Any(u => u.Email == "TestAdmin@Mailinator.com"))
+            if (!context.Users.Any(u => u.Email == "DemoAdmin@Mailinator.com"))
             {
                 userManager.Create(new ApplicationUser
                 {
-                    UserName = "TestAdmin@Mailinator.com",
-                    Email = "TestAdmin@Mailinator.com",
-                    FirstName = "Test",
+                    UserName = "DemoAdmin@Mailinator.com",
+                    Email = "DemoAdmin@Mailinator.com",
+                    FirstName = "Demo",
                     LastName = "Admin",
                     DisplayName = "Admin",
                 }, "Abc&123!");
             }
 
-            userId = userManager.FindByEmail("TestAdmin@Mailinator.com").Id;
+            userId = userManager.FindByEmail("DemoAdmin@Mailinator.com").Id;
             userManager.AddToRole(userId, "Admin");
 
-            if (!context.Users.Any(u => u.Email == "TestPM@Mailinator.com"))
+            if (!context.Users.Any(u => u.Email == "DemoPM@Mailinator.com"))
             {
                 userManager.Create(new ApplicationUser
                 {
-                    UserName = "TestPM@Mailinator.com",
-                    Email = "TestPM@Mailinator.com",
-                    FirstName = "Test",
+                    UserName = "DemoPM@Mailinator.com",
+                    Email = "DemoPM@Mailinator.com",
+                    FirstName = "Demo",
                     LastName = "ProjectManager",
-                    DisplayName = "ProjectManager",
+                    DisplayName = "Project Manager",
                 }, "Abc&123!");
             }
 
-            userId = userManager.FindByEmail("TestPM@Mailinator.com").Id;
+            userId = userManager.FindByEmail("DemoPM@Mailinator.com").Id;
             userManager.AddToRole(userId, "ProjectManager");
 
-            if (!context.Users.Any(u => u.Email == "TestSubmitter@Mailinator.com"))
+            if (!context.Users.Any(u => u.Email == "DemoSubmitter@Mailinator.com"))
             {
                 userManager.Create(new ApplicationUser
                 {
-                    UserName = "TestSubmitter@Mailinator.com",
-                    Email = "TestSubmitter@Mailinator.com",
-                    FirstName = "Test",
+                    UserName = "DemoSubmitter@Mailinator.com",
+                    Email = "DemoSubmitter@Mailinator.com",
+                    FirstName = "Demo",
                     LastName = "Submitter",
                     DisplayName = "Submitter",
                 }, "Abc&123!");
             }
 
-            userId = userManager.FindByEmail("TestSubmitter@Mailinator.com").Id;
+            userId = userManager.FindByEmail("DemoSubmitter@Mailinator.com").Id;
             userManager.AddToRole(userId, "Submitter");
 
-            if (!context.Users.Any(u => u.Email == "TestDev@Mailinator.com"))
+            if (!context.Users.Any(u => u.Email == "DemoDev@Mailinator.com"))
             {
                 userManager.Create(new ApplicationUser
                 {
-                    UserName = "TestDev@Mailinator.com",
-                    Email = "TestDev@Mailinator.com",
-                    FirstName = "Test",
+                    UserName = "DemoDev@Mailinator.com",
+                    Email = "DemoDev@Mailinator.com",
+                    FirstName = "Demo",
                     LastName = "Developer",
                     DisplayName = "Developer",
                 }, "Abc&123!");
             }
 
-            userId = userManager.FindByEmail("TestDev@Mailinator.com").Id;
+            userId = userManager.FindByEmail("DemoDev@Mailinator.com").Id;
             userManager.AddToRole(userId, "Developer");
 
             //Add records into any of my custom tables
+            var projectStatusIds = new List<int> { 100, 200, 300 };
+            if (context.ProjectStatuses.Count() == 0)
+            {
+                context.ProjectStatuses.AddOrUpdate(
+                    p => p.Name,
+                        new ProjectStatus { Id = projectStatusIds[0], Name = "Open" },
+                        new ProjectStatus { Id = projectStatusIds[1], Name = "On Hold" },
+                        new ProjectStatus { Id = projectStatusIds[2], Name = "Closed"}
+                );
+            }
+
+            var ticketPriorityIds = new List<int> { 100, 200, 300, 400, 500 };
             if (context.TicketPriorities.Count() == 0)
             {
                 context.TicketPriorities.AddOrUpdate(
                 t => t.Name,
-                    new TicketPriority { Id = 100, Name = "Immediate" },
-                    new TicketPriority { Id = 200, Name = "High" },
-                    new TicketPriority { Id = 300, Name = "Medium" },
-                    new TicketPriority { Id = 400, Name = "Low" },
-                    new TicketPriority { Id = 500, Name = "Ignore" }
+                    new TicketPriority { Id = ticketPriorityIds[0], Name = "Immediate" },
+                    new TicketPriority { Id = ticketPriorityIds[1], Name = "High" },
+                    new TicketPriority { Id = ticketPriorityIds[2], Name = "Medium" },
+                    new TicketPriority { Id = ticketPriorityIds[3], Name = "Low" },
+                    new TicketPriority { Id = ticketPriorityIds[4], Name = "Ignore" }
              );
             }
-            
+
+            var ticketStatusIds = new List<int> { 100, 200, 300, 400, 500, 600 };
             if (context.TicketStatuses.Count() == 0)
             {
                 context.TicketStatuses.AddOrUpdate(
                t => t.Name,
-                   new TicketStatus { Id = 100, Name = "Unassigned" },
-                   new TicketStatus { Id = 200, Name = "In Progress" },
-                   new TicketStatus { Id = 300, Name = "Assigned/On Hold" },
-                   new TicketStatus { Id = 400, Name = "Resolved" },
-                   new TicketStatus { Id = 500, Name = "Closed" }
+                   new TicketStatus { Id = ticketStatusIds[0], Name = "Unassigned" },
+                   new TicketStatus { Id = ticketStatusIds[1], Name = "Assigned" },
+                   new TicketStatus { Id = ticketStatusIds[2], Name = "In Progress" },
+                   new TicketStatus { Id = ticketStatusIds[3], Name = "On Hold" },
+                   new TicketStatus { Id = ticketStatusIds[4], Name = "Resolved" },
+                   new TicketStatus { Id = ticketStatusIds[5], Name = "Closed" }
             );
             }
-            
+
+            var ticketTypeIds = new List<int> { 100, 200, 300, 400 };
             if (context.TicketTypes.Count() == 0)
             {
                 context.TicketTypes.AddOrUpdate(
                t => t.Name,
-                   new TicketType { Id = 100, Name = "Bug" },
-                   new TicketType { Id = 200, Name = "Call for documentation" },
-                   new TicketType { Id = 300, Name = "ScreenCast Demo Request" }
+                   new TicketType { Id = ticketTypeIds[0], Name = "Bug Fix" },
+                   new TicketType { Id = ticketTypeIds[1], Name = "Task" },
+                   new TicketType { Id = ticketTypeIds[2], Name = "Documentation Request" },
+                   new TicketType { Id = ticketTypeIds[3], Name = "Demo Video Request" }
             );
             }
 
+            var projectIds = new List<int> { 100, 200, 300, 400, 500 };
+            if (context.Projects.Count() == 0)
+            {
+                context.Projects.AddOrUpdate(
+                    t => t.Name,
+                        new Project { Id = projectIds[0], Name = "Honey Badger", Description = "", ProjectStatusId = projectStatusIds[0] },
+                        new Project { Id = projectIds[0], Name = "Michigo", Description = "", ProjectStatusId = projectStatusIds[0] },
+                        new Project { Id = projectIds[0], Name = "Raging Mongoose", Description = "", ProjectStatusId = projectStatusIds[0] },
+                        new Project { Id = projectIds[0], Name = "Ugly Duckling", Description = "", ProjectStatusId = projectStatusIds[0] },
+                        new Project { Id = projectIds[0], Name = "Black Mamba", Description = "", ProjectStatusId = projectStatusIds[0] }
+                );
+            }
+
+            #region AttachmentTypes
             context.AttachmentTypes.AddOrUpdate(
                 t => t.Type,
                     new AttachmentType { Type = "txt" },
@@ -155,9 +186,10 @@ namespace BugTracker.Migrations
                     new AttachmentType { Type = "png" },
                     new AttachmentType { Type = "tiff" }
             );
+            #endregion
 
         }
-        
+
 
     }
 }

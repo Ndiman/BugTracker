@@ -65,5 +65,6 @@ namespace BugTracker.Models
         public DbSet<TicketType> TicketTypes { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<AttachmentType> AttachmentTypes { get; set; }
+        public DbSet<ProjectStatus> ProjectStatuses { get; set; }
     }
 }

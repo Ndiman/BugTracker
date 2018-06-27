@@ -33,5 +33,10 @@ namespace BugTracker.Controllers
         {
             return View();
         }
+
+        public ActionResult GeneralError()
+        {
+            return View();
+        }
     }
 }
