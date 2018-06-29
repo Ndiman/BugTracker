@@ -1,5 +1,6 @@
 ﻿@model BugTracker.Models.LoginViewModel
-@{ 
+@using BugTracker.Models
+@{
     Layout = null;
 }
 
@@ -60,7 +61,7 @@
                                 </p>
                                 <div class="clearfix"></div>
                                 <p>
-                                        <a href="@Url.Action("Index", "Home")" type="submit" class="btn btn-sm btn-primary">Demo Login</a>
+                                    <a href="@Url.Action("Index", "Home")" type="submit" class="btn btn-sm btn-primary">Demo Login</a>
                                 </p>
                                 <br />
                                 <div>
@@ -70,11 +71,16 @@
                             </div>
                         </form>
                     }
-                    </section>
+                </section>
             </div>
             <div id="register" class="animate form registration_form">
                 <section class="login_content">
-                    @Html.Partial("_RegisterPartial")
+                    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        var register = new RegisterViewModel();
+                        @Html.Partial("_RegisterPartial", register)
+                    }
                 </section>
             </div>
         </div>

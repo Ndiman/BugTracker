@@ -10,6 +10,7 @@ using BugTracker.Models;
 
 namespace BugTracker.Controllers
 {
+    [RequireHttps]
     [Authorize]
     public class TicketHistoriesController : Controller
     {

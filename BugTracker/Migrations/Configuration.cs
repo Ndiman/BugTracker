@@ -163,11 +163,12 @@ namespace BugTracker.Migrations
             {
                 context.Projects.AddOrUpdate(
                     t => t.Name,
-                        new Project { Id = projectIds[0], Name = "Honey Badger", Description = "", ProjectStatusId = projectStatusIds[0] },
-                        new Project { Id = projectIds[0], Name = "Michigo", Description = "", ProjectStatusId = projectStatusIds[0] },
-                        new Project { Id = projectIds[0], Name = "Raging Mongoose", Description = "", ProjectStatusId = projectStatusIds[0] },
-                        new Project { Id = projectIds[0], Name = "Ugly Duckling", Description = "", ProjectStatusId = projectStatusIds[0] },
-                        new Project { Id = projectIds[0], Name = "Black Mamba", Description = "", ProjectStatusId = projectStatusIds[0] }
+                        new Project { Id = projectIds[0], Name = "Lannister", Description = "Financial Firm System", ProjectStatusId = projectStatusIds[0] },
+                        new Project { Id = projectIds[0], Name = "Stark", Description = "Outdoor Equipment Records System", ProjectStatusId = projectStatusIds[0] },
+                        new Project { Id = projectIds[0], Name = "Baratheon", Description = "Funeral Service System", ProjectStatusId = projectStatusIds[2] },
+                        new Project { Id = projectIds[0], Name = "Targaryen", Description = "Fire Fighter Dispatch", ProjectStatusId = projectStatusIds[0] },
+                        new Project { Id = projectIds[0], Name = "Tyrell", Description = "Landscaping Company Stystem", ProjectStatusId = projectStatusIds[0] },
+                        new Project { Id = projectIds[0], Name = "Dorne", Description = "Mobile Field Reporting", ProjectStatusId = projectStatusIds[1] }
                 );
             }
 
@@ -187,6 +188,26 @@ namespace BugTracker.Migrations
                     new AttachmentType { Type = "tiff" }
             );
             #endregion
+
+            //var r = new Random();
+            ////Seeding a bunch of tickets
+            //for (var loop=1; loop <= 100; loop++)
+            //{
+            //    context.Tickets.AddOrUpdate(
+            //        t => t.Title,
+            //            new Ticket
+            //            {
+            //                ProjectId = projectIds[r.Next(0, projectIds.Count())],
+            //                TicketPriorityId = ticketPriorityIds[r.Next(0, ticketPriorityIds.Count())],
+            //                TicketStatusId = ticketStatusIds[r.Next(0, ticketStatusIds.Count())],
+            //                TicketTypeId = ticketTypeIds[r.Next(0, ticketTypeIds.Count())],
+            //                OwnerUserId = 
+            //                AssignedToUserId =
+            //                Title = "Test Ticket #" + loop,
+            //                Created = DateTimeOffset.Now,
+            //                Description = "Generic description outlining the main issue"
+            //            });
+            //}
 
         }
 

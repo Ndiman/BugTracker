@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace BugTracker.Controllers
 {
+    [RequireHttps]
     [Authorize]
     public class TicketsController : Controller
     {
@@ -155,6 +156,12 @@ namespace BugTracker.Controllers
                 db.Entry(ticket).Property(x => x.TicketPriorityId).IsModified = true;
                 db.Entry(ticket).Property(x => x.TicketStatusId).IsModified = true;
                 db.Entry(ticket).Property(x => x.AssignedToUserId).IsModified = true;
+
+                //If we are going from an unassigned Ticket to an Assigned Ticket, the Ticket Status needs to change
+                if (string.IsNullOrEmpty(oldTicket.AssignedToUserId) && !string.IsNullOrEmpty(ticket.AssignedToUserId))
+                {
+                    ticket.TicketStatusId = db.TicketStatuses.FirstOrDefault(t => t.Name == "Assigned").Id;
+                }
 
                 db.SaveChanges();
 

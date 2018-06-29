@@ -13,6 +13,7 @@ using System.Web.Security;
 
 namespace BugTracker.Controllers
 {
+    [RequireHttps]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
@@ -177,10 +178,11 @@ namespace BugTracker.Controllers
             {
                 var user = new ApplicationUser { DisplayName = model.DisplayName, UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
                 var result = await UserManager.CreateAsync(user, model.Password);
+
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -191,9 +193,17 @@ namespace BugTracker.Controllers
                 }
                 AddErrors(result);
             }
+            else
+            {
+                if (string.IsNullOrEmpty(model.DisplayName))
+                {
+                    ModelState.AddModelError("", "Invalid entry.");
+                }
+                return RedirectToAction("");
 
+            }
             // If we got this far, something failed, redisplay form
-            return View("Login", "Account");
+            return RedirectToAction("Account", "Login");
         }
 
         //

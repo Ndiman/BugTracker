@@ -10,6 +10,7 @@ using BugTracker.Models;
 
 namespace BugTracker.Controllers
 {
+    [RequireHttps]
     public class ProjectStatusesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

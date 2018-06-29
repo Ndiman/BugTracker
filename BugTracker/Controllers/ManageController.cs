@@ -12,6 +12,7 @@ using BugTracker.ViewModels;
 
 namespace BugTracker.Controllers
 {
+    [RequireHttps]
     [Authorize]
     public class ManageController : Controller
     {

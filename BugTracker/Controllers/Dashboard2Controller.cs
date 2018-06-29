@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity;
 
 namespace BugTracker.Controllers
 {
+    [RequireHttps]
     [Authorize]
     public class Dashboard2Controller : Controller
     {

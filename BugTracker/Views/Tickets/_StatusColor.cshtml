@@ -4,7 +4,11 @@
 {
     <a class="btn-sm btn-danger">@Html.DisplayFor(model => model.TicketStatus.Name)</a>
 }
-else if (Model.TicketStatus.Name == "Assigned/On Hold")
+else if (Model.TicketStatus.Name == "Assigned")
+{
+    <a class="btn-sm btn-info">@Html.DisplayFor(model => model.TicketStatus.Name)</a>
+}
+else if (Model.TicketStatus.Name == "On Hold")
 {
     <a class="btn-sm btn-warning">@Html.DisplayFor(model => model.TicketStatus.Name)</a>
 }
@@ -20,3 +24,7 @@ else
 {
     <a class="btn-sm btn-dark">@Html.DisplayFor(model => model.TicketStatus.Name)</a>
 }
+
+@*update aspnetusers
+set avatarpath = '/Avatars/default.png'
+select * from *@ 

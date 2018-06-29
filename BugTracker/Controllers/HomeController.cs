@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace BugTracker.Controllers
 {
+    [RequireHttps]
     [Authorize]
     public class HomeController : Controller
     {
@@ -33,7 +34,7 @@ namespace BugTracker.Controllers
         {
             return View();
         }
-
+        [AllowAnonymous]
         public ActionResult GeneralError()
         {
             return View();

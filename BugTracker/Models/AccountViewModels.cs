@@ -65,15 +65,18 @@ namespace BugTracker.Models
     public class RegisterViewModel
     {
         [Required]
+        [MinLength(1, ErrorMessage = "You must enter a First Name")]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [Required]
+        [MinLength(1, ErrorMessage = "You must enter a Last Name")]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
         [Required]
-        [Display(Name = "Username")]
+        [MinLength(1, ErrorMessage = "You must enter a Display Name")]
+        [Display(Name = "Display Name")]
         public string DisplayName { get; set; }
 
         [Required]

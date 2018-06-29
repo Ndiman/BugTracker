@@ -11,6 +11,7 @@ using BugTracker.Models;
 
 namespace BugTracker.Controllers
 {
+    [RequireHttps]
     public class AttachmentTypesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

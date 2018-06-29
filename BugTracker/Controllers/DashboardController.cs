@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace BugTracker.Controllers
 {
+    [RequireHttps]
     [Authorize]
     public class DashboardController : Controller
     {

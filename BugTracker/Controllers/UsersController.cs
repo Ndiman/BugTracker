@@ -11,6 +11,7 @@ using BugTracker.Models;
 
 namespace BugTracker.Controllers
 {
+    [RequireHttps]
     [Authorize(Roles = "Admin, ProjectManager")]
     public class UsersController : Controller
     {
