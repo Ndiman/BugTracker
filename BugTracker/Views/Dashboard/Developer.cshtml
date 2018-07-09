@@ -1,7 +1,242 @@
-﻿
-@{
-    ViewBag.Title = "Developer";
+﻿@model BugTracker.ViewModels.DashboardVM
+@using BugTracker.Helpers
+@using Microsoft.AspNet.Identity
+
+
+<div class="">
+    <div class="row top_tiles">
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="tile-stats">
+                <div class="icon"><i class="fa fa-tasks"></i></div>
+                <div class="count">@Model.ProjectData.MyProjectCnt</div>
+                <h3>Total Projects</h3>
+                <p><a href="@Url.Action("MyProjects", "Projects")">View My Projects</a></p>
+            </div>
+        </div>
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="tile-stats">
+                <div class="icon"><i class="fa fa-tags"></i></div>
+                <div class="count">@Model.TicketData.TicketCnt</div>
+                <h3>Total Tickets</h3>
+                <p><a href="@Url.Action("MyTickets", "Tickets")">View My Tickets</a></p>
+            </div>
+        </div>
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="tile-stats">
+                <div class="icon"><i class="fa fa-exclamation-triangle"></i></div>
+                <div class="count">@Model.TicketData.ImmediateTicketCnt</div>
+                <h3>Immediate Priority</h3>
+                <p><a href="@Url.Action("MyTickets", "Tickets")">View My Tickets</a></p>
+            </div>
+        </div>
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="tile-stats">
+                <div class="icon"><i class="fa fa-check-square-o"></i></div>
+                <div class="count">@Model.TicketData.ResolvedTicketCnt</div>
+                <h3>Resolved Tickets</h3>
+                <p><a href="@Url.Action("MyTickets", "Tickets")">View My Tickets</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+
+    <!-- Immediate Priority Table -->
+    <div class="col-md-7 col-sm-7 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Recent Immediate Priority Tickets</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table id="datatable" class="table table-striped table-bordered datatables">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayName("Title")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Project")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Status")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Type")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Created")
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.TableData.Tickets.Where(t => t.TicketPriority.Name == "Immediate").Take(10))
+                        {
+                            <tr>
+                                <td>
+                                    <a href="@Url.Action("Details", "Tickets", new { id = item.Id } )"><span>@Html.DisplayFor(modelItem => item.Title)</span></a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Project.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TicketStatus.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TicketType.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Created.DateTime.ToString().Split(' ')[0])
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Immediate Priority Table -->
+
+    <div class="col-md-5 col-sm-5 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Immediate Tickets by Project</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content2">
+                <div id="ticketDonutChartContainer">Ticket Data will load here</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Recent Tickets Table -->
+    <div class="col-md-7 col-sm-7 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Recent Tickets</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table id="datatable" class="table table-striped table-bordered datatables">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayName("Title")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Project")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Priority")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Status")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Type")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Created")
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.TableData.Tickets.Take(10))
+                        {
+                            <tr>
+                                <td>
+                                    <a href="@Url.Action("Details", "Tickets", new { id = item.Id } )"><span>@Html.DisplayFor(modelItem => item.Title)</span></a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Project.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TicketPriority.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TicketStatus.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TicketType.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Created.DateTime.ToString().Split(' ')[0])
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- /Recent Tickets Table -->
+    <div class="col-md-5 col-sm-5 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Calendar</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div id='calendar'></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+    <script>
+     var url = '@Url.Action("MyImmediate_Data", "Dashboard")'
+        $.post(url).then(function (response) {
+            FusionCharts.ready(function () {
+                var revenueChart = new FusionCharts({
+                    type: 'doughnut3d',
+                    renderAt: 'ticketDonutChartContainer',
+                    width: '480',
+                    height: '400',
+                    dataFormat: 'json',
+                    dataSource: {
+                        "chart": {
+                            //"caption": "Unassigned Tickets",
+                            //"subCaption": "by Project",
+                            "use3DLighting": "1",
+                            "enableSmartLabels": "1",
+                            "startingAngle": "270",
+                            "showLabels": "1",
+                            "showLegend": "1",
+                            "centerLabelBold": "1",
+                            "showTooltip": "1",
+                            "useDataPlotColorForLabels": "1",
+                            "theme": "fint"
+                        },
+                        "data": response.Data
+                    }
+                });
+                revenueChart.render();
+            });
+        });
+    </script>
 }
-
-<h2>Developer</h2>
-

@@ -1,11 +1,18 @@
 ﻿@model BugTracker.Models.RegisterViewModel
 
+
+@*<style>
+        #fieldError {
+            padding-bottom: 20px;
+        }
+    </style>*@
 <form>
     <h1>Create Account</h1>
-    @Html.ValidationSummary("", new { @class = "text-danger" })
+    @Html.ValidationSummary("<i class='fa fa-exclamation-cirle'></i>", new { @class = "text-danger error", id = "fieldError" })
     <div>
         @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "First Name" })
         @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+        @*<h5><label id="firstNameError" style="color:red"></label></h5>*@
     </div>
     <div>
         @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Last Name" })
@@ -44,3 +51,32 @@
     </div>
 </form>
 
+<script>
+    @*var fNameErrorMsg = '@TempData["FirstNameError"]';*@
+    //if (fNameErrorMsg != "") {
+    //    alert(fNameErrorMsg);
+    //}
+    document.getElementById("fieldError").innerHTML = '@TempData["FieldError"]';
+
+</script>
+
+
+@* //in ticket details controller
+    public ActionResult MarkAsRead(int notificationId)
+    {
+                var notification = db.TicketNotifications.Find(notificationId);
+                notification.Notified = true;
+                db.SaveChanges();
+
+        return RedirectToAction("", "")
+    }
+
+    @if (item.Body.Contains(""))
+    {
+        //redirect to ticket details
+    }
+    else
+    {
+        @url.action("MarkAsRead", "Tickets", new { notificationId = item.Id})
+    }
+*@

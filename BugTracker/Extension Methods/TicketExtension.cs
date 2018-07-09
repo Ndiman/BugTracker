@@ -123,57 +123,65 @@ namespace BugTracker.Extension_Methods
             }
 
             //Generate Notifcation
-            TicketNotification notification = null;
-            notification = new TicketNotification
-            {
-                Body = "Ticket has been reassigned",
-                Subject = "Ticket has been reassigned",
-                RecipientId = ticket.AssignedToUserId,
-                TicketId = ticket.Id,
-                Created = DateTimeOffset.Now
-            };
-            db.TicketNotifications.Add(notification);
-            db.SaveChanges();
             //TicketNotification notification = null;
-            //if (newAssignment)
+            //notification = new TicketNotification
             //{
-            //    notification = new TicketNotification
-            //    {
-            //        Body = "A Ticket has been assigned to you<br />" + body.ToString(),
-            //        RecipientId = ticket.AssignedToUserId,
-            //        TicketId = ticket.Id
-            //    };
-            //    db.TicketNotifications.Add(notification);
-            //}
-            //else if(unAssignment)
-            //{
-            //    notification = new TicketNotification
-            //    {
-            //        Body = "You have been taken off of a Ticket<br />" + body.ToString(),
-            //        RecipientId = oldTicket.AssignedToUserId,
-            //        TicketId = ticket.Id
-            //    };
-            //    db.TicketNotifications.Add(notification);
-            //}
-            //else if(reAssignment)
-            //{
-            //    notification = new TicketNotification
-            //    {
-            //        Body = "A Ticket has beena assigned to you<br />" + body.ToString(),
-            //        RecipientId = ticket.AssignedToUserId,
-            //        TicketId = ticket.Id
-            //    };
-            //    db.TicketNotifications.Add(notification);
-
-            //    notification = new TicketNotification
-            //    {
-            //        Body = "Notification: You have been taken off of a Ticket<br />" + body.ToString(),
-            //        RecipientId = oldTicket.AssignedToUserId,
-            //        TicketId = ticket.Id
-            //    };
-            //    db.TicketNotifications.Add(notification);
-            //}
+            //    Body = "Ticket has been reassigned",
+            //    Subject = "Ticket has been reassigned",
+            //    RecipientId = ticket.AssignedToUserId,
+            //    TicketId = ticket.Id,
+            //    Created = DateTimeOffset.Now
+            //};
+            //db.TicketNotifications.Add(notification);
             //db.SaveChanges();
+            TicketNotification notification = null;
+            if (newAssignment)
+            {
+                notification = new TicketNotification
+                {
+                    Body = body.ToString(),
+                    Subject = "A Ticket has been assigned to you",
+                    RecipientId = ticket.AssignedToUserId,
+                    TicketId = ticket.Id,
+                    Created = DateTimeOffset.Now
+                };
+                db.TicketNotifications.Add(notification);
+            }
+            else if (unAssignment)
+            {
+                notification = new TicketNotification
+                {
+                    Body = body.ToString(),
+                    Subject = "You have been taken off of a Ticket",
+                    RecipientId = oldTicket.AssignedToUserId,
+                    TicketId = ticket.Id,
+                    Created = DateTimeOffset.Now
+                };
+                db.TicketNotifications.Add(notification);
+            }
+            else if (reAssignment)
+            {
+                notification = new TicketNotification
+                {
+                    Body = body.ToString(),
+                    Subject = "A Ticket has been assigned to you",
+                    RecipientId = ticket.AssignedToUserId,
+                    TicketId = ticket.Id,
+                    Created = DateTimeOffset.Now
+                };
+                db.TicketNotifications.Add(notification);
+
+                notification = new TicketNotification
+                {
+                    Body = body.ToString(),
+                    Subject= "You have been taken off of a Ticket",
+                    RecipientId = oldTicket.AssignedToUserId,
+                    TicketId = ticket.Id,
+                    Created = DateTimeOffset.Now
+                };
+                db.TicketNotifications.Add(notification);
+            }
+            db.SaveChanges();
         }
 
         //public static void CommentAdded (this TicketComment ticketComment, TicketComment oldTicketComment)

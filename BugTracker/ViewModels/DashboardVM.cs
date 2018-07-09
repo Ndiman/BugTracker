@@ -8,6 +8,7 @@ namespace BugTracker.ViewModels
 {
     public class DashboardVM
     {
+        public virtual CalendarEvent CalendarEvent { get; set; }
         //for filling in Badges/Labels
         public TicketDashboardData TicketData { get; set; }
         public ProjectDashboardData ProjectData { get; set; }

@@ -201,6 +201,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AttachmentTypesController.cs" />
+    <Compile Include="Controllers\CalendarEventsController.cs" />
     <Compile Include="Controllers\Dashboard2Controller.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -229,6 +230,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AttachmentType.cs" />
+    <Compile Include="Models\CalendarEvent.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Project.cs" />
@@ -243,6 +245,7 @@
     <Compile Include="Models\TicketType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\ChartVM.cs" />
     <Compile Include="ViewModels\DashboardVM.cs" />
     <Compile Include="ViewModels\MyProjectsViewModel.cs" />
     <Compile Include="ViewModels\UserProfileViewModel.cs" />
@@ -265,24 +268,6 @@
     <Content Include="Gentella\build\images\loading.gif" />
     <Content Include="Gentella\build\js\custom.js" />
     <Content Include="Gentella\build\js\custom.min.js" />
-    <Content Include="Gentella\documentation\css\animate.min.css" />
-    <Content Include="Gentella\documentation\css\bootstrap.min.css" />
-    <Content Include="Gentella\documentation\css\docs.min.css" />
-    <Content Include="Gentella\documentation\css\shCoreDefault.css" />
-    <Content Include="Gentella\documentation\fonts\css\font-awesome.css" />
-    <Content Include="Gentella\documentation\fonts\css\font-awesome.min.css" />
-    <Content Include="Gentella\documentation\fonts\fonts\fontawesome-webfont.svg" />
-    <Content Include="Gentella\documentation\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Gentella\documentation\images\layout.png" />
-    <Content Include="Gentella\documentation\images\min_menu.png" />
-    <Content Include="Gentella\documentation\images\min_menu.tiff" />
-    <Content Include="Gentella\documentation\images\welcome.png" />
-    <Content Include="Gentella\documentation\images\welcome.tiff" />
-    <Content Include="Gentella\documentation\index.html" />
-    <Content Include="Gentella\documentation\js\bootstrap.min.js" />
-    <Content Include="Gentella\documentation\js\jquery.min.js" />
-    <Content Include="Gentella\documentation\js\shBrushXml.js" />
-    <Content Include="Gentella\documentation\js\shCore.js" />
     <Content Include="Gentella\gulpfile.js" />
     <Content Include="Gentella\production\calendar.html" />
     <Content Include="Gentella\production\chartjs.html" />
@@ -3759,40 +3744,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Gentella\bower.json" />
-    <Content Include="Gentella\documentation\fonts\fonts\fontawesome-webfont.eot" />
-    <Content Include="Gentella\documentation\fonts\fonts\fontawesome-webfont.ttf" />
-    <Content Include="Gentella\documentation\fonts\fonts\fontawesome-webfont.woff" />
-    <Content Include="Gentella\documentation\fonts\fonts\FontAwesome.otf" />
-    <Content Include="Gentella\documentation\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Gentella\documentation\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="Gentella\documentation\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="Gentella\documentation\fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="Gentella\documentation\fonts\less\bordered-pulled.less" />
-    <Content Include="Gentella\documentation\fonts\less\core.less" />
-    <Content Include="Gentella\documentation\fonts\less\fixed-width.less" />
-    <Content Include="Gentella\documentation\fonts\less\font-awesome.less" />
-    <Content Include="Gentella\documentation\fonts\less\icons.less" />
-    <Content Include="Gentella\documentation\fonts\less\larger.less" />
-    <Content Include="Gentella\documentation\fonts\less\list.less" />
-    <Content Include="Gentella\documentation\fonts\less\mixins.less" />
-    <Content Include="Gentella\documentation\fonts\less\path.less" />
-    <Content Include="Gentella\documentation\fonts\less\rotated-flipped.less" />
-    <Content Include="Gentella\documentation\fonts\less\spinning.less" />
-    <Content Include="Gentella\documentation\fonts\less\stacked.less" />
-    <Content Include="Gentella\documentation\fonts\less\variables.less" />
-    <Content Include="Gentella\documentation\fonts\scss\font-awesome.scss" />
-    <Content Include="Gentella\documentation\fonts\scss\_bordered-pulled.scss" />
-    <Content Include="Gentella\documentation\fonts\scss\_core.scss" />
-    <Content Include="Gentella\documentation\fonts\scss\_fixed-width.scss" />
-    <Content Include="Gentella\documentation\fonts\scss\_icons.scss" />
-    <Content Include="Gentella\documentation\fonts\scss\_larger.scss" />
-    <Content Include="Gentella\documentation\fonts\scss\_list.scss" />
-    <Content Include="Gentella\documentation\fonts\scss\_mixins.scss" />
-    <Content Include="Gentella\documentation\fonts\scss\_path.scss" />
-    <Content Include="Gentella\documentation\fonts\scss\_rotated-flipped.scss" />
-    <Content Include="Gentella\documentation\fonts\scss\_spinning.scss" />
-    <Content Include="Gentella\documentation\fonts\scss\_stacked.scss" />
-    <Content Include="Gentella\documentation\fonts\scss\_variables.scss" />
     <Content Include="Gentella\package.json" />
     <Content Include="Gentella\src\scss\custom.scss" />
     <Content Include="Gentella\src\scss\daterangepicker.scss" />
@@ -4751,7 +4702,6 @@
     <Content Include="Views\AttachmentTypes\Index.cshtml" />
     <Content Include="Views\Tickets\_AttachmentIcon.cshtml" />
     <Content Include="Views\Home\Error.cshtml" />
-    <Content Include="Views\Dashboard2\Index.cshtml" />
     <Content Include="Views\Account\_RegisterPartial.cshtml" />
     <Content Include="Views\Home\GeneralError.cshtml" />
     <Content Include="Views\ProjectStatuses\Create.cshtml" />
@@ -4759,6 +4709,12 @@
     <Content Include="Views\ProjectStatuses\Details.cshtml" />
     <Content Include="Views\ProjectStatuses\Edit.cshtml" />
     <Content Include="Views\ProjectStatuses\Index.cshtml" />
+    <Content Include="Views\Dashboard\Index.cshtml" />
+    <Content Include="Views\CalendarEvents\Create.cshtml" />
+    <Content Include="Views\CalendarEvents\Delete.cshtml" />
+    <Content Include="Views\CalendarEvents\Details.cshtml" />
+    <Content Include="Views\CalendarEvents\Edit.cshtml" />
+    <Content Include="Views\CalendarEvents\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

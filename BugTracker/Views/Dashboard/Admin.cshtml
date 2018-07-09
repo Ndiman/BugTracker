@@ -1,7 +1,344 @@
-﻿
-@{
-    ViewBag.Title = "Admin";
-}
+﻿@model BugTracker.ViewModels.DashboardVM
+@using BugTracker.Helpers
+@using Microsoft.AspNet.Identity
+@using BugTracker.Models
 
-<h2>Admin</h2>
+<!-- Top Badges -->
+<div class="">
+    <div class="row top_tiles">
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="tile-stats">
+                <div class="icon"><i class="fa fa-tasks"></i></div>
+                <div class="count">@Model.ProjectData.ProjectCnt</div>
+                <h3>Total Projects</h3>
+                <p><a href="@Url.Action("Index", "Projects")">View Project Index</a></p>
+            </div>
+        </div>
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="tile-stats">
+                <div class="icon"><i class="fa fa-tags"></i></div>
+                <div class="count">@Model.TicketData.TicketCnt</div>
+                <h3>Total Tickets</h3>
+                <p><a href="@Url.Action("Index", "Tickets")">View Ticket Index</a></p>
+            </div>
+        </div>
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="tile-stats">
+                <div class="icon"><i class="fa fa-exclamation-triangle"></i></div>
+                <div class="count">@Model.TicketData.UnassignedTicketCnt</div>
+                <h3>Unassigned Tickets</h3>
+                <p><a href="@Url.Action("Index", "Tickets")">View Ticket Index</a></p>
+            </div>
+        </div>
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="tile-stats">
+                <div class="icon"><i class="fa fa-check-square-o"></i></div>
+                <div class="count">@Model.TicketData.ResolvedTicketCnt</div>
+                <h3>Resolved Tickets</h3>
+                <p><a href="@Url.Action("Index", "Tickets")">View Ticket Index</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Top Badges -->
+
+<div class="row">
+    <!-- Unassigned Tickets Table -->
+    <div class="col-md-7 col-sm-7 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Unassigned Tickets</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table id="datatable" class="table table-striped table-bordered datatables">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayName("Title")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Project")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Priority")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Type")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Created")
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.TableData.Tickets.Where(t => t.AssignedToUserId == null))
+                        {
+                            <tr>
+                                <td>
+                                    <a href="@Url.Action("Details", "Tickets", new { id = item.Id } )"><span>@Html.DisplayFor(modelItem => item.Title)</span></a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Project.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TicketPriority.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TicketType.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Created.DateTime.ToString().Split(' ')[0])
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- /Unassigned Tickets Table-->
+    <!-- Morris Donut Unassigned Tickets by Project -->
+    @*<div class="col-md-3 col-sm-3 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Pie Chart <small>Sessions</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content2">
+                    <div id="donut" style="width:100%; height:300px;"></div>
+                </div>
+            </div>
+        </div>*@
+    <!-- /Morris Donut Unassigned Tickets by Project -->
+    <!-- Unassigned Tickets by Project -->
+    <div class="col-md-5 col-sm-5 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Unassigned Tickets by Project</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content2">
+                <div id="ticketDonutChartContainer">Ticket Data will load here</div>
+            </div>
+        </div>
+    </div>
+    <!-- Unassigned Tickets by Project -->
+</div>
+<div class="row">
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Tickets on Projects</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content2">
+                <div id="ticketChartContainer">Ticket Data will load here</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calendar -->
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Calendar</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div id='calendar'></div>
+            </div>
+        </div>
+    </div>
+    <!-- /Calendar -->
+    <!-- calendar modal -->
+    @*<div id="CalenderModalNew" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">New Calendar Entry</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="testmodal" style="padding: 5px 20px;">
+                        @using (Html.BeginForm("Create", "CalendarEvents", FormMethod.Post, new { @class = "form", @role = "dialog" }))
+                        {
+                            @Html.AntiForgeryToken()
+                        <form id="antoform" class="form-horizontal calender" role="form">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Title</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="title" name="Title">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Description</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" style="height:55px;" id="descr" name="Description"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                        }
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default antoclose" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary antosubmit" value="Submit">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="CalenderModalEdit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel2">Edit Calendar Entry</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="testmodal2" style="padding: 5px 20px;">
+                        @using (Html.BeginForm("Create", "CalendarEvents", FormMethod.Post, new { @class = "form", @role = "dialog" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <form id="antoform2" class="form-horizontal calender" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Title</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="title2" name="Title">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Description</label>
+                                    <div class="col-sm-9">
+                                        <textarea class="form-control" style="height:55px;" id="descr2" name="Description"></textarea>
+                                    </div>
+                                </div>
+                            </form>
+                        }
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default antoclose2" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary antosubmit2" value="Submit">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="fc_create" data-toggle="modal" data-target="#CalenderModalNew"></div>
+    <div id="fc_edit" data-toggle="modal" data-target="#CalenderModalEdit"></div>*@
+    <!-- /calendar modal -->
+</div>
+
+
+@section scripts {
+    <script>
+     var url = '@Url.Action("Unassigned_Data", "Dashboard")'
+        $.post(url).then(function (response) {
+            FusionCharts.ready(function () {
+                var revenueChart = new FusionCharts({
+                    type: 'doughnut3d',
+                    renderAt: 'ticketDonutChartContainer',
+                    width: '480',
+                    height: '430',
+                    dataFormat: 'json',
+                    dataSource: {
+                        "chart": {
+                            //"caption": "Unassigned Tickets",
+                            //"subCaption": "by Project",
+                            "use3DLighting": "1",
+                            "enableSmartLabels": "1",
+                            "startingAngle": "270",
+                            "showLabels": "1",
+                            "showLegend": "1",
+                            "centerLabelBold": "1",
+                            "showTooltip": "1",
+                            "useDataPlotColorForLabels": "1",
+                            "theme": "fint"
+                        },
+                        "data": response.Data
+                    }
+                });
+                revenueChart.render();
+            });
+        });
+
+        var url = '@Url.Action("TicketProj_Data", "Dashboard")'
+        $.post(url).then(function (response) {
+            FusionCharts.ready(function () {
+                var revenueChart = new FusionCharts({
+                    "type": "column3d",
+                    "renderAt": "ticketChartContainer",
+                    "width": "550",
+                    "height": "475",
+                    "dataFormat": "json",
+                    "dataSource": {
+                        "chart": {
+                            //"caption": "Tickets By Status",
+                            //"subCaption": "Day Two BugTracker",
+                            "xAxisName": "Status",
+                            "yAxisName": "Count",
+                            "theme": "fint"
+                        },
+                        "data": response.Data
+                    }
+                });
+                revenueChart.render();
+            });
+        });
+
+
+
+
+
+    //function init_morris_charts() {
+
+    //    if (typeof (Morris) === 'undefined') { return; }
+    //    console.log('init_morris_charts');
+
+    //    if ($('#donut').length) {
+
+    //        Morris.Donut({
+    //            element: 'donut',
+    //            data: [
+    //                { label: 'Tyrell', value: 25 },
+    //                { label: 'Lannister', value: 40 },
+    //                { label: 'Targaryen', value: 25 },
+    //                { label: 'Stark', value: 10 }
+    //            ],
+    //            colors: ['#26B99A', '#34495E', '#ACADAC', '#3498DB'],
+    //            formatter: function (y) {
+    //                return y + "%";
+    //            },
+    //            resize: true
+    //        });
+
+    //    }
+    //};
+    </script>
+}
 

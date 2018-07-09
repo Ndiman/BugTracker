@@ -61,46 +61,46 @@
                 </div>
                 <div class="x_content">
                     <div class="col-md-9 col-sm-9 col-xs-12">
-
-                        <div class="x_panel">
+                        @if (User.IsInRole("Developer"))
+                        {
                             <div class="x_title">
                                 <h2>Notifications</h2>
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li>
-                                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                    </li>
-                                </ul>
                                 <div class="clearfix"></div>
                             </div>
-                            @foreach (var notification in Model.TicketNotifications.OrderByDescending(t => t.Id))
+                            foreach (var notification in Model.TicketNotifications.OrderByDescending(t => t.Id).Where(t => t.Read != true))
                             {
-                                <div class="x_content bs-example-popovers">
-                                    <div class="alert alert-warning alert-dismissible fade in" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">×</span>
-                                        </button>
-                                        @notification.Subject on @notification.Created.ToString().Split(' ')[0]
-                                    </div>
+                            <div class="x_content bs-example-popovers">
+                                <div class="alert alert-warning alert-dismissible fade in" role="alert">
+                                    <a href="@Url.Action("MarkAsRead", "Tickets", new { notificationId = notification.Id, ticketId = notification.TicketId })" class="close" data-dismiss="alert" aria-label="Close" id="markAsRead">
+                                        <span aria-hidden="true">×</span>
+                                    </a>
+                                    @notification.Subject on @notification.Created.ToString().Split(' ')[0]
                                 </div>
+                            </div>
                             }
-                        </div>
+
                         <br />
                         <br />
                         <br />
+                        <br />
+                        <br />
+                        }
+                        <br />
+                        
                         @*<ul class="stats-overview">
-                                <li>
-                                    <span class="name"> Estimated budget </span>
-                                    <span class="value text-success"> 2300 </span>
-                                </li>
-                                <li>
-                                    <span class="name"> Total amount spent </span>
-                                    <span class="value text-success"> 2000 </span>
-                                </li>
-                                <li class="hidden-phone">
-                                    <span class="name"> Estimated project duration </span>
-                                    <span class="value text-success"> 20 </span>
-                                </li>
-                            </ul>*@
+            <li>
+                <span class="name"> Estimated budget </span>
+                <span class="value text-success"> 2300 </span>
+            </li>
+            <li>
+                <span class="name"> Total amount spent </span>
+                <span class="value text-success"> 2000 </span>
+            </li>
+            <li class="hidden-phone">
+                <span class="name"> Estimated project duration </span>
+                <span class="value text-success"> 20 </span>
+            </li>
+        </ul>*@
                         <br />
                         @*<div id="mainb" style="height:350px;"></div>*@
                         <div>
@@ -149,7 +149,7 @@
                                                     <br />
                                                     <p>
                                                         @*<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                                                            <a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>*@
+                                        <a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>*@
                                                     </p>
                                                 </div>
                                             </li>
@@ -199,6 +199,41 @@
                         </div>
 
                         <!-- end Ticket History -->
+                        <!-- Notification History -->
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Notification History</h2>
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li>
+                                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>@Html.DisplayName("Notification")</th>
+                                            <th>@Html.DisplayName("Recipient")</th>
+                                            <th>@Html.DisplayName("Sent")</th>
+                                            <th>@Html.DisplayName("Read")</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var notification in Model.TicketNotifications.OrderByDescending(c => c.Id))
+                                        {
+                                            <tr>
+                                                <td>@notification.Subject</td>
+                                                <td>@notification.Recipient.DisplayName</td>
+                                                <td>@notification.Created.ToString().Split(' ')[0]</td>
+                                                <td>@notification.Read</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- end Notification History -->
                     </div>
                     <!-- start project-detail sidebar -->
                     <div class="col-md-3 col-sm-3 col-xs-12">

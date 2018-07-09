@@ -22,25 +22,25 @@
                             @Html.DisplayNameFor(model => model.Title)
                         </th>
                         <th>
-                            @Html.DisplayName("Project Name")
+                            @Html.DisplayName("Project")
                         </th>
                         <th>
-                            @Html.DisplayName("Priority Name")
+                            @Html.DisplayName("Priority")
                         </th>
                         <th>
-                            @Html.DisplayName("Ticket Status")
+                            @Html.DisplayName("Status")
                         </th>
                         <th>
-                            @Html.DisplayName("Ticket Type")
+                            @Html.DisplayName("Type")
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.Description)
                         </th>
                         <th>
-                            @Html.DisplayName("Developer Name")
+                            @Html.DisplayName("Developer")
                         </th>
                         <th>
-                            @Html.DisplayName("Submitter Name")
+                            @Html.DisplayName("Submitter")
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.Created)
@@ -86,7 +86,7 @@
                             @Html.DisplayFor(modelItem => item.OwnerUser.DisplayName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Created.DateTime)
+                            @Html.DisplayFor(modelItem => item.Created.DateTime.ToString().Split(' ')[0])
                         </td>
                         @*<td>
             @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |

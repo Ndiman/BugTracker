@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNet.Identity;
 @using BugTracker.Helpers;
+@using BugTracker.Models;
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,6 +31,9 @@
     <link href="~/Gentella/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
     <!-- Dropzone.js -->
     <link href="~/Gentella/vendors/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
+    <!-- FullCalendar -->
+    <link href="~/Gentella/vendors/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
+    <link href="~/Gentella/vendors/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print">
     <!-- Custom Theme Style -->
     <link href="~/Gentella/build/css/custom.min.css" rel="stylesheet">
     <!-- My Styles -->
@@ -37,6 +41,11 @@
 </head>
 
 <body class="nav-md">
+    @{
+        var db = new ApplicationDbContext();
+        var user = User.Identity.GetUserId();
+        var userName = db.Users.Find(user);
+    }
     <div class="container body">
         <div class="main_container">
             <div class="col-md-3 left_col menu_fixed">
@@ -51,7 +60,7 @@
                             <img src="~/Gentella/production/images/user.png" alt="..." class="img-circle profile_img">
                         </div>
                         <div class="profile_info">
-                            <span>Welcome,</span>
+                            <span>Welcome</span>
                             <h2>@User.Identity.GetUserFullName()</h2>
                         </div>
                     </div>
@@ -60,8 +69,13 @@
                     <!-- sidebar menu -->
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
-                            <h3>General</h3>
                             <ul class="nav side-menu">
+                                <li>
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <a href="@Url.Action("Index", "Dashboard")"><i class="fa fa-bar-chart"></i> Dashboard</a>
+                                    }
+                                </li>
                                 <li>
                                     @if (User.IsInRole("ProjectManager"))
                                     {
@@ -142,24 +156,24 @@
                     </div>
                     <!-- /sidebar menu -->
                     <!-- /menu footer buttons -->
-                    <div class="sidebar-footer hidden-small">
-                        <a data-toggle="tooltip" data-placement="top" title="Settings">
-                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-                        </a>
-                        <a data-toggle="tooltip" data-placement="top" title="FullScreen">
-                            <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-                        </a>
-                        <a data-toggle="tooltip" data-placement="top" title="Account" href="@Url.Action("Index", "Manage")">
-                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                        </a>
-                        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
-                        {
-                            @Html.AntiForgeryToken()
-                            <a data-toggle="tooltip" data-placement="top" title="Logout" href="javascript:document.getElementById('logoutForm').submit()">
-                                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                    @*<div class="sidebar-footer hidden-small">
+                            <a data-toggle="tooltip" data-placement="top" title="Settings">
+                                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
                             </a>
-                        }
-                    </div>
+                            <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+                            </a>
+                            <a data-toggle="tooltip" data-placement="top" title="Account" href="@Url.Action("Index", "Manage")">
+                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                            </a>
+                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <a data-toggle="tooltip" data-placement="top" title="Logout" href="javascript:document.getElementById('logoutForm').submit()">
+                                    <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                                </a>
+                            }
+                        </div>*@
                     <!-- /menu footer buttons -->
                 </div>
             </div>
@@ -170,45 +184,83 @@
                         <div class="nav toggle">
                             <a id="menu_toggle"><i class="fa fa-bars"></i></a>
                         </div>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="">
-                                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="images/img.jpg" alt="">@User.Identity.GetUserFullName()
-                                    <span class=" fa fa-angle-down"></span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                    @*<li><a href="javascript:;"> Profile</a></li>
-                                    <li>
-                                        <a href="javascript:;">
-                                            <span class="badge bg-red pull-right">50%</span>
-                                            <span>Settings</span>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="">
+                                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <img src="images/img.jpg" alt="">
+                                        @userName.DisplayName
+
+                                        <span class=" fa fa-angle-down"></span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                        <li><a href="@Url.Action("Index", "Manage")"><i class="fa fa-user pull-right"></i> Profile</a></li>
+                                        @*<li>
+                                                <a href="javascript:;">
+                                                    <span class="badge bg-red pull-right">50%</span>
+                                                    <span>Settings</span>
+                                                </a>
+                                            </li>
+                                            <li><a href="javascript:;">Help</a></li>*@
+                                        <li>
+                                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                <a href="javascript:document.getElementById('logoutForm').submit()">
+                                                    <i class="fa fa-sign-out pull-right"></i> Log Out
+                                                </a>
+                                            }
+                                        </li>
+                                        @*<li><a href="@Url.Action("Login", "Account")"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>*@
+                                    </ul>
+                                </li>
+                                @if (User.IsInRole("Developer"))
+                                {
+                                    <li role="presentation" class="dropdown">
+                                        <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa fa-envelope-o"></i>
+                                            @{
+                                                var notificationCnt = db.TicketNotifications.Where(t => t.RecipientId == user).Where(t => t.Read != true).Count();
+                                            }
+                                            @if (notificationCnt != 0)
+                                            {
+                                                <span class="badge bg-green">@notificationCnt</span>
+                                            }
                                         </a>
+                                        <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                                            @foreach (var notification in db.TicketNotifications.OrderByDescending(t => t.Id).Where(t => t.RecipientId == user).Where(t => t.Read != true).ToList())
+                                            {
+                                                <li>
+                                                    <a href="
+                                               @if (notification.Subject.Contains("You have been taken off of a Ticket"))
+                                               {
+                                                    @Url.Action("Index", "Dashboard2")
+                                               }
+                                               else
+                                               {
+                                                    @Url.Action("MarkAsRead", "Tickets", new { notificationId = notification.Id, ticketId = notification.TicketId })
+                                               }
+                                               ">
+                                                        @*<span class="image"><img src="~/Gentella/production/images/img.jpg" alt="Profile Image" /></span>*@
+                                                        @*<span>
+                                                                <span>John Smith</span>
+                                                                <span class="time">3 mins ago</span>
+                                                            </span>*@
+
+                                                        <span class="message">
+                                                            @Html.Raw(notification.Subject)
+                                                        </span>
+
+
+                                                    </a>
+                                                </li>
+                                            }
+                                        </ul>
                                     </li>
-                                    <li><a href="javascript:;">Help</a></li>*@
-                                    <li><a href="@Url.Action("Login", "Account")"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
-                                </ul>
-                            </li>
-                            @*<li role="presentation" class="dropdown">
-                                <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
-                                    <i class="fa fa-envelope-o"></i>
-                                    <span class="badge bg-green">6</span>
-                                </a>
-                                <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
-                                    <li>
-                                        <a>
-                                            <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>*@
-                        </ul>
+                                }
+                            </ul>
+                        }
                     </nav>
                 </div>
             </div>
@@ -228,7 +280,7 @@
             <!-- footer content -->
             <footer>
                 <div class="pull-right">
-                    Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+                    <p>©2018 Nicole Iman</p>
                 </div>
                 <div class="clearfix"></div>
             </footer>
@@ -249,17 +301,18 @@
     <script src="~/Gentella/vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
     <!-- Datatables -->
     <script src="~/Gentella/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="~/Gentella/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    @*<script src="~/Gentella/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>*@
+    <script src="~/Gentella/vendors/datatables.net-bs/js/dataTables.bootstrap.js"></script>
     <script src="~/Gentella/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
     <script src="~/Gentella/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
     <script src="~/Gentella/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
     <script src="~/Gentella/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
     <script src="~/Gentella/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
-    <script src="~/Gentella/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
-    <script src="~/Gentella/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-    <script src="~/Gentella/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="~/Gentella/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
-    <script src="~/Gentella/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+    @*<script src="~/Gentella/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+        <script src="~/Gentella/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+        <script src="~/Gentella/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="~/Gentella/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+        <script src="~/Gentella/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>*@
     <script src="~/Gentella/vendors/jszip/dist/jszip.min.js"></script>
     <script src="~/Gentella/vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="~/Gentella/vendors/pdfmake/build/vfs_fonts.js"></script>
@@ -267,8 +320,16 @@
     <script src="~/Gentella/vendors/dropzone/dist/min/dropzone.min.js"></script>
     <!-- Fusion Charts -->
     <script type="text/javascript" src="https://static.fusioncharts.com/code/latest/fusioncharts.js"></script>
+    <!-- morris.js -->
+    <script src="~/Gentella/vendors/raphael/raphael.min.js"></script>
+    <script src="~/Gentella/vendors/morris.js/morris.min.js"></script>
+    <!-- FullCalendar -->
+    <script src="~/Gentella/vendors/moment/min/moment.min.js"></script>
+    <script src="~/Gentella/vendors/fullcalendar/dist/fullcalendar.min.js"></script>
     <!-- Custom Theme Scripts -->
-    <script src="~/Gentella/build/js/custom.min.js"></script>
+    @*<script src="~/Gentella/build/js/custom.min.js"></script>*@
+    <script src="~/Gentella/build/js/custom.js"></script>
+    @RenderSection("scripts", required: false)
 </body>
 </html>
 

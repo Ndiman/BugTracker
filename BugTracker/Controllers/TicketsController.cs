@@ -124,10 +124,31 @@ namespace BugTracker.Controllers
             }
             ViewBag.AssignedToUserId = new SelectList(projDevs, "Id", "DisplayName", ticket.AssignedToUserId);
 
+            if (User.IsInRole("Developer"))
+            {
+                ViewBag.TicketStatusId = new SelectList(db.TicketStatuses.Where(t => t.Name != "Unassigned" && t.Name != "Closed"), "Id", "Name", ticket.TicketStatusId);
+            }
+            else
+            {
+                ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
+            }
+            //else if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+            //{
+            //    ViewBag.TicketStatusId = new SelectList(db.TicketStatuses.Where(t => t.Name == "Closed"), "Id", "Name", ticket.TicketStatusId);
+            //}
+
+            var myProjects = projHelper.ListUserProjects(User.Identity.GetUserId());
+            if (User.IsInRole("Admin"))
+            {
+                ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
+            }
+            else
+            {
+                ViewBag.ProjectId = new SelectList(myProjects, "Id", "Name", ticket.ProjectId);
+            }
             ViewBag.OwnerUserId = new SelectList(db.Users, "Id", "DisplayName", ticket.OwnerUserId);
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
-            ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
+            //ViewBag.TicketStatusId = new SelectList(db.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name", ticket.TicketTypeId);
 
 
@@ -198,48 +219,58 @@ namespace BugTracker.Controllers
             return View(ticket);
         }
 
-        // GET: Tickets/Delete/5
-        [TicketAuthorization]
-        public ActionResult Delete(int? id)
+        public ActionResult MarkAsRead(int notificationId, int ticketId)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Ticket ticket = db.Tickets.Find(id);
-            if (ticket == null)
-            {
-                return HttpNotFound();
-            }
-                return View(ticket);
+            
+            var notification = db.TicketNotifications.Find(notificationId);
+            notification.Read = true;
+            db.SaveChanges();
+
+            return RedirectToAction("Details", new { id = ticketId } );
         }
+
+        // GET: Tickets/Delete/5
+        //[TicketAuthorization]
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Ticket ticket = db.Tickets.Find(id);
+        //    if (ticket == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //        return View(ticket);
+        //}
 
         // POST: Tickets/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Ticket ticket = db.Tickets.Find(id);
-            db.Tickets.Remove(ticket);
-            db.SaveChanges();
-            if (User.IsInRole("Admin"))
-            {
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                return RedirectToAction("MyTickets");
-            }
-            
-        }
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    Ticket ticket = db.Tickets.Find(id);
+        //    db.Tickets.Remove(ticket);
+        //    db.SaveChanges();
+        //    if (User.IsInRole("Admin"))
+        //    {
+        //        return RedirectToAction("Index");
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("MyTickets");
+        //    }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        //}
+
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        db.Dispose();
+        //    }
+        //    base.Dispose(disposing);
+        //}
     }
 }

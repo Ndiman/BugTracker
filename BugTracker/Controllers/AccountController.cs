@@ -78,7 +78,7 @@ namespace BugTracker.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToAction("Index", "Dashboard2");
+                    return RedirectToAction("Index", "Dashboard");
                 default:
                     return RedirectToAction("Index", "Home");
             }
@@ -103,7 +103,7 @@ namespace BugTracker.Controllers
             {
                 case SignInStatus.Success:
                     if (returnUrl == null)
-                        return RedirectToAction("Index", "Dashboard2");
+                        return RedirectToAction("Index", "Dashboard");
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -189,15 +189,18 @@ namespace BugTracker.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Dashboard2");
+                    return RedirectToAction("Index", "Dashboard");
                 }
                 AddErrors(result);
             }
             else
             {
-                if (string.IsNullOrEmpty(model.DisplayName))
+                if ((string.IsNullOrEmpty(model.FirstName)) ||
+                        (string.IsNullOrEmpty(model.LastName)) ||
+                        (string.IsNullOrEmpty(model.DisplayName)))
                 {
-                    ModelState.AddModelError("", "Invalid entry.");
+                    TempData["FieldError"] = "All Fields Are Required";
+                    return RedirectToLocal("~/Account/Login#signup");
                 }
                 return RedirectToAction("");
 

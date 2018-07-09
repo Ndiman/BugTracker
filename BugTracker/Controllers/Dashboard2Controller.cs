@@ -66,7 +66,14 @@ namespace BugTracker.Controllers
             //load up al the Project Dashboard Data
             data.ProjectData.ProjectCnt = db.Projects.Count();
 
-            return View(data);
+            if (User.IsInRole("Admin"))
+                return View("Admin", data);
+            else if (User.IsInRole("ProjectManager"))
+                return View("ProjectManager");
+            else if (User.IsInRole("Submitter"))
+                return View("Submitter");
+            else
+                return View("Developer");
         }
     }
 }
