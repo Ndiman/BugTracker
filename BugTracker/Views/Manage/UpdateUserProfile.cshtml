@@ -3,24 +3,24 @@
 
 
 <div class="">
-    
+
     <div class="clearfix"></div>
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
                     <h2>Update Profile Info</h2>
-                    
+
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
                     <br />
-                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
 
-                        @using (Html.BeginForm())
-                        {
-                            @Html.AntiForgeryToken()
 
+                    @using (Html.BeginForm("UpdateUserProfile", "Manage", FormMethod.Post, new { @enctype = "Multipart/form-data", @class = "form-horizontal", @role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
                             <div class="form-horizontal">
                                 <h4>ApplicationUser</h4>
                                 <hr />
@@ -57,6 +57,12 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    @Html.LabelFor(m => m.AvatarPath, new { @class = "col-md-2 control-label" })
+                                    <div class="col-md-10">
+                                        <input type="file" name="file" id="file" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <div class="col-md-offset-2 col-md-10">
                                         <input type="submit" value="Save" class="btn btn-default" />
                                     </div>
@@ -64,45 +70,45 @@
                             </div>
 
                             @*<div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">First Name <span class="required">*</span>
-                </label>
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Last Name <span class="required">*</span>
-                </label>
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input type="text" id="last-name" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Display Name <span class="required">*</span>
-                </label>
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input id="display-name" class="form-control col-md-7 col-xs-12" type="text" name="display-name">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Email <span class="required">*</span>
-                </label>
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input type="text" id="email" name="email" required="required" class="form-control col-md-7 col-xs-12">
-                </div>
-            </div>
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">First Name <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Last Name <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="text" id="last-name" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Display Name <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="display-name" class="form-control col-md-7 col-xs-12" type="text" name="display-name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Email <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="text" id="email" name="email" required="required" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                </div>
 
-            <div class="ln_solid"></div>
-            <div class="form-group">
-                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                    <button class="btn btn-primary" type="reset">Reset</button>
-                    <button type="submit" class="btn btn-success">Submit</button>
-                </div>
-            </div>*@
+                                <div class="ln_solid"></div>
+                                <div class="form-group">
+                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                        <button class="btn btn-primary" type="reset">Reset</button>
+                                        <button type="submit" class="btn btn-success">Submit</button>
+                                    </div>
+                                </div>*@
+                        </form>
+                    }
 
-                        }
 
-                    </form>
                 </div>
             </div>
         </div>
@@ -111,46 +117,4 @@
 
 
 
-
-@*<div class="form-horizontal">
-        <h4>ApplicationUser</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DisplayName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DisplayName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DisplayName, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
-    </div>*@
 

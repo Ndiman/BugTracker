@@ -24,6 +24,8 @@ namespace BugTracker.Controllers
         [Authorize(Roles = "Admin, ProjectManager")]
         public ActionResult Index()
         {
+
+
             return View(db.Projects.ToList());
         }
 

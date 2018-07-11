@@ -39,7 +39,10 @@ namespace BugTracker.Controllers
             {
                 data.TableData.Tickets = myTickets.OrderByDescending(t => t.Created).ToList();
             }
+
             data.TableData.TicketNotifications = db.TicketNotifications.OrderByDescending(t => t.Id).ToList();
+
+
             data.TableData.TicketAttachments = db.TicketAttachments.OrderByDescending(t => t.Created).ToList();
             data.TableData.TicketComments = db.TicketComments.OrderByDescending(t => t.Created).ToList();
             data.TableData.TicketHistories = db.TicketHistories.OrderByDescending(t => t.Changed).ToList();

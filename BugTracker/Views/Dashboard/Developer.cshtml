@@ -41,6 +41,42 @@
 </div>
 
 <div class="row">
+    <div class="col-md-9 col-sm-9 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Recent Notifications</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayName("Notification")</th>
+                            <th>@Html.DisplayName("Sent")</th>
+                            <th>@Html.DisplayName("Read")</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var notification in Model.TableData.TicketNotifications.Where(t => t.RecipientId == User.Identity.GetUserId()).Take(5))
+                        {
+                            <tr>
+                                <td>@notification.Subject</td>
+                                <td>@notification.Created.ToString().Split(' ')[0]</td>
+                                <td>@notification.Read</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
 
     <!-- Immediate Priority Table -->
     <div class="col-md-7 col-sm-7 col-xs-12">
@@ -100,6 +136,72 @@
                 </table>
             </div>
         </div>
+
+        <!-- Recent Tickets Table -->
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Recent Tickets</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <table id="datatable" class="table table-striped table-bordered datatables">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayName("Title")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Project")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Priority")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Status")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Type")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Created")
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.TableData.Tickets.Take(10))
+                            {
+                                <tr>
+                                    <td>
+                                        <a href="@Url.Action("Details", "Tickets", new { id = item.Id } )"><span>@Html.DisplayFor(modelItem => item.Title)</span></a>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Project.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TicketPriority.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TicketStatus.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TicketType.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Created.DateTime.ToString().Split(' ')[0])
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <!-- /Recent Tickets Table -->
+
     </div>
     <!-- Immediate Priority Table -->
 
@@ -118,77 +220,7 @@
                 <div id="ticketDonutChartContainer">Ticket Data will load here</div>
             </div>
         </div>
-    </div>
-</div>
-
-<div class="row">
-    <!-- Recent Tickets Table -->
-    <div class="col-md-7 col-sm-7 col-xs-12">
-        <div class="x_panel">
-            <div class="x_title">
-                <h2>Recent Tickets</h2>
-                <ul class="nav navbar-right panel_toolbox">
-                    <li>
-                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                    </li>
-                </ul>
-                <div class="clearfix"></div>
-            </div>
-            <div class="x_content">
-                <table id="datatable" class="table table-striped table-bordered datatables">
-                    <thead>
-                        <tr>
-                            <th>
-                                @Html.DisplayName("Title")
-                            </th>
-                            <th>
-                                @Html.DisplayName("Project")
-                            </th>
-                            <th>
-                                @Html.DisplayName("Priority")
-                            </th>
-                            <th>
-                                @Html.DisplayName("Status")
-                            </th>
-                            <th>
-                                @Html.DisplayName("Type")
-                            </th>
-                            <th>
-                                @Html.DisplayName("Created")
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.TableData.Tickets.Take(10))
-                        {
-                            <tr>
-                                <td>
-                                    <a href="@Url.Action("Details", "Tickets", new { id = item.Id } )"><span>@Html.DisplayFor(modelItem => item.Title)</span></a>
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Project.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.TicketPriority.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.TicketStatus.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.TicketType.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Created.DateTime.ToString().Split(' ')[0])
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <!-- /Recent Tickets Table -->
-    <div class="col-md-5 col-sm-5 col-xs-12">
+  
         <div class="x_panel">
             <div class="x_title">
                 <h2>Calendar</h2>

@@ -16,7 +16,8 @@ namespace BugTracker.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string DisplayName { get; set; }
-        
+        public string AvatarPath { get; set; }
+
         public virtual ICollection<Project> Projects { get; set; }
         public virtual ICollection<TicketAttachment> TicketAttachments { get; set; }
         public virtual ICollection<TicketComment> TicketComments { get; set; }

@@ -35,7 +35,8 @@
     <link href="~/Gentella/vendors/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
     <link href="~/Gentella/vendors/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print">
     <!-- Custom Theme Style -->
-    <link href="~/Gentella/build/css/custom.min.css" rel="stylesheet">
+    @*<link href="~/Gentella/build/css/custom.min.css" rel="stylesheet">*@
+    <link href="~/Gentella/build/css/custom.css" rel="stylesheet" />
     <!-- My Styles -->
     <link href="~/Helpers/MyStyles.css" rel="stylesheet" />
 </head>
@@ -57,7 +58,14 @@
                     <!-- menu profile quick info -->
                     <div class="profile clearfix">
                         <div class="profile_pic">
-                            <img src="~/Gentella/production/images/user.png" alt="..." class="img-circle profile_img">
+                            @if (userName.AvatarPath != null)
+                            {
+                                <img src="@userName.AvatarPath" class="img-circle profile_img"/>
+                            }
+                            else
+                            {
+                                <img src="~/Avatars/default.png" alt="..." class="img-circle profile_img">
+                            }
                         </div>
                         <div class="profile_info">
                             <span>Welcome</span>
@@ -195,7 +203,11 @@
                                         <span class=" fa fa-angle-down"></span>
                                     </a>
                                     <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                        <li><a href="@Url.Action("Index", "Manage")"><i class="fa fa-user pull-right"></i> Profile</a></li>
+                                        @if (userName.FirstName != "Demo")
+                                        {
+                                            <li><a href="@Url.Action("Index", "Manage")"><i class="fa fa-user pull-right"></i> Profile</a></li>
+                                        }
+
                                         @*<li>
                                                 <a href="javascript:;">
                                                     <span class="badge bg-red pull-right">50%</span>

@@ -9,11 +9,15 @@ using Microsoft.Owin.Security;
 using BugTracker.Models;
 using System.Net;
 using BugTracker.ViewModels;
+using BugTracker.ActionFilters;
+using System.IO;
+using System.Web.Helpers;
 
 namespace BugTracker.Controllers
 {
     [RequireHttps]
     [Authorize]
+    [DemoAuthorization]
     public class ManageController : Controller
     {
         private ApplicationSignInManager _signInManager;
@@ -259,7 +263,8 @@ namespace BugTracker.Controllers
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 DisplayName = user.DisplayName,
-                Email = user.Email
+                Email = user.Email,
+                AvatarPath = user.AvatarPath
             };
 
             return View(profileInfo);
@@ -268,8 +273,31 @@ namespace BugTracker.Controllers
         //POST: /Manage/UpdateUserProfile
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UpdateUserProfile(UserProfileViewModel userProfile)
+        public ActionResult UpdateUserProfile(UserProfileViewModel userProfile, HttpPostedFileBase file)
         {
+            var image = WebImage.GetImageFromRequest();
+            var width = image.Width;
+            var height = image.Height;
+            if (image != null)
+            {
+                if (width > height)
+                {
+                    var leftRightCrop = (width - height) / 2;
+                    image.Crop(0, leftRightCrop, 0, leftRightCrop);
+                }
+                else if (height > width)
+                {
+                    var topBottomCrop = (height - width) / 2;
+                    image.Crop(topBottomCrop, 0, topBottomCrop, 0);
+                }
+
+                var filename = Path.GetFileName(image.FileName).Replace(' ', '_');
+                image.Save(Path.Combine(Server.MapPath("../Avatars/"), filename));
+                filename = Path.Combine("~/Avatars/" + filename);
+
+                userProfile.AvatarPath = Url.Content(filename);
+            }
+
             var userId = User.Identity.GetUserId();
             var user = db.Users.Find(userId);
 
@@ -278,6 +306,11 @@ namespace BugTracker.Controllers
             user.DisplayName = userProfile.DisplayName;
             user.Email = userProfile.Email;
             user.UserName = userProfile.Email;
+            user.AvatarPath = userProfile.AvatarPath;
+
+            
+
+
 
             db.Users.Attach(user);
             db.Entry(user).Property(x => x.FirstName).IsModified = true;
@@ -285,9 +318,10 @@ namespace BugTracker.Controllers
             db.Entry(user).Property(x => x.DisplayName).IsModified = true;
             db.Entry(user).Property(x => x.Email).IsModified = true;
             db.Entry(user).Property(x => x.UserName).IsModified = true;
+            db.Entry(user).Property(x => x.AvatarPath).IsModified = true;
             db.SaveChanges();
 
-            return RedirectToAction("Index", "Users");
+            return RedirectToAction("Index", "Dashboard");
         }
 
         //
@@ -431,5 +465,45 @@ namespace BugTracker.Controllers
         }
 
 #endregion
+
+        //public ActionResult UpdateUserProfile()
+        //{
+        //    var userId = User.Identity.GetUserId();
+        //    var user = db.Users.Find(userId);
+
+        //    var profileInfo = new UserProfileViewModel
+        //    {
+        //        FirstName = user.FirstName,
+        //        LastName = user.LastName,
+        //        DisplayName = user.DisplayName,
+        //        Email = user.Email
+        //    };
+
+        //    return View(profileInfo);
+        //}
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult UpdateUserProfile(UserProfileViewModel userProfile)
+        //{
+        //    var userId = User.Identity.GetUserId();
+        //    var user = db.Users.Find(userId);
+
+        //    user.FirstName = userProfile.FirstName;
+        //    user.LastName = userProfile.LastName;
+        //    user.DisplayName = userProfile.DisplayName;
+        //    user.Email = userProfile.Email;
+        //    user.UserName = userProfile.Email;
+
+        //    db.Users.Attach(user);
+        //    db.Entry(user).Property(x => x.FirstName).IsModified = true;
+        //    db.Entry(user).Property(x => x.LastName).IsModified = true;
+        //    db.Entry(user).Property(x => x.DisplayName).IsModified = true;
+        //    db.Entry(user).Property(x => x.Email).IsModified = true;
+        //    db.Entry(user).Property(x => x.UserName).IsModified = true;
+        //    db.SaveChanges();
+
+        //    return RedirectToAction("Index", "Dashboard");
+        //}
     }
 }
