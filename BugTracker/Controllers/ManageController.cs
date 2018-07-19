@@ -276,10 +276,11 @@ namespace BugTracker.Controllers
         public ActionResult UpdateUserProfile(UserProfileViewModel userProfile, HttpPostedFileBase file)
         {
             var image = WebImage.GetImageFromRequest();
-            var width = image.Width;
-            var height = image.Height;
+            
             if (image != null)
             {
+                var width = image.Width;
+                var height = image.Height;
                 if (width > height)
                 {
                     var leftRightCrop = (width - height) / 2;

@@ -145,31 +145,31 @@ namespace BugTracker.Controllers
             return View(applicationUser);
         }
 
-        // GET: Users/Delete/5
-        public ActionResult Delete(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ApplicationUser applicationUser = db.Users.Find(id);
-            if (applicationUser == null)
-            {
-                return HttpNotFound();
-            }
-            return View(applicationUser);
-        }
+        //// GET: Users/Delete/5
+        //public ActionResult Delete(string id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    ApplicationUser applicationUser = db.Users.Find(id);
+        //    if (applicationUser == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(applicationUser);
+        //}
 
-        // POST: Users/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
-        {
-            ApplicationUser applicationUser = db.Users.Find(id);
-            db.Users.Remove(applicationUser);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        //// POST: Users/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(string id)
+        //{
+        //    ApplicationUser applicationUser = db.Users.Find(id);
+        //    db.Users.Remove(applicationUser);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
 
         protected override void Dispose(bool disposing)
         {
